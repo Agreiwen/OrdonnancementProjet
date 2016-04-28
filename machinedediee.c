@@ -3,15 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct element element;
-struct element
-{
-  int val;
-  struct element *next;
-};
-
-typedef element* llist;
-
 
 struct tache {
   int pi;
@@ -23,6 +14,38 @@ struct tache {
 
 typedef struct tache tache;
 
+
+typedef struct element element;
+struct element
+{
+  tache t;
+  struct element *next;
+};
+
+typedef element* llist;
+
+
+llist ajouterEnTete(llist liste, tache tache1){
+  element* nouvelElement = malloc(sizeof(element));
+  nouvelElement->t = tache1;
+  nouvelElement->next = liste;
+  return nouvelElement;
+}
+
+
+void afficherListeTaches(llist taches){
+
+  element *tmp = taches;
+  printf("Liste des taches :\n");
+  while(tmp != NULL){
+    printf("pi : %i",tmp->t.pi);
+    printf("| ri : %i",tmp->t.ri);
+    printf("| ti : %i",tmp->t.ti);
+    printf("| machine : %i",tmp->t.machine);
+    printf("| famille : %i\n",tmp->t.famille);
+    tmp = tmp->next;
+  }
+}
 
 
 int main(int argc, char **argv){
@@ -38,6 +61,19 @@ int main(int argc, char **argv){
   tache t4 = { .pi = 1, .ri = 0, .ti = 0, .machine = 2, .famille = 4 };
   tache t5 = { .pi = 2, .ri = 3, .ti = 0, .machine = 3, .famille = 3 };
   tache t6 = { .pi = 4, .ri = 0, .ti = 0, .machine = 1, .famille = 6 };
+  
+  
+  llist taches = NULL;
+  taches = ajouterEnTete(taches, t1);
+  taches = ajouterEnTete(taches, t2);
+  taches = ajouterEnTete(taches, t3);
+  taches = ajouterEnTete(taches, t4);
+  taches = ajouterEnTete(taches, t5);
+  taches = ajouterEnTete(taches, t6);
+
+  afficherListeTaches(taches);
+
+
 
   // 1. definir heuristique 
   // choix de l'utilisateur (tapez 1 pour h1, 2 pour h2, etc.)
