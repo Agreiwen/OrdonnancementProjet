@@ -5,6 +5,7 @@
 
 
 struct tache {
+  int id;
   int pi;
   int ri;
   int ti;
@@ -40,7 +41,8 @@ void afficherListeTaches(llist taches){
   element *tmp = taches;
   printf("Liste des taches :\n");
   while(tmp != NULL){
-    printf("pi : %i",tmp->t.pi);
+    printf("id : %i",tmp->t.id);
+    printf("| pi : %i",tmp->t.pi);
     printf("| ri : %i",tmp->t.ri);
     printf("| ti : %i",tmp->t.ti);
     printf("| famille : %i\n",tmp->t.famille);
@@ -68,12 +70,12 @@ int main(int argc, char **argv){
   struct element *ma_liste3 = NULL;
   */
 
-  tache t1 = { .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
-  tache t2 = { .pi = 3, .ri = 0, .ti = 0, .famille = 1 };
-  tache t3 = { .pi = 7, .ri = 2, .ti = 0, .famille = 5 };
-  tache t4 = { .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
-  tache t5 = { .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
-  tache t6 = { .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
+  tache t1 = { .id = 1, .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
+  tache t2 = { .id = 2, .pi = 3, .ri = 0, .ti = 0, .famille = 1 };
+  tache t3 = { .id = 3, .pi = 7, .ri = 2, .ti = 0, .famille = 5 };
+  tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
+  tache t5 = { .id = 5, .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
+  tache t6 = { .id = 6, .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
   
   /* famille : 1 sur la machine 1 uniquement 
                2 sur la 2
