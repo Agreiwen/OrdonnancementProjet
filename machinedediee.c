@@ -11,7 +11,6 @@ struct tache {
   int ti;
   int famille;
 };
-
 typedef struct tache tache;
 
 
@@ -24,6 +23,9 @@ struct element
 
 typedef element* llist;
 
+
+int sommeFinTache;
+tache tab[6];
 
 llist ajouterEnTete(llist liste, tache tache1){
   element* nouvelElement = malloc(sizeof(element));
@@ -76,16 +78,16 @@ int main(int argc, char **argv){
   tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
   tache t5 = { .id = 5, .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
   tache t6 = { .id = 6, .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
-  
-  /* famille : 1 sur la machine 1 uniquement 
+
+  /* famille : 1 sur la machine 1 uniquement
                2 sur la 2
-               3 sur la 3 
-               4 sur 1 et 2 
-               5 sur 2 et 3 
-               6 sur 1 et 3 
-               7 sur les 3  
+               3 sur la 3
+               4 sur 1 et 2
+               5 sur 2 et 3
+               6 sur 1 et 3
+               7 sur les 3
   */
-  
+
   llist taches = NULL;
   taches = ajouterEnTete(taches, t1);
   taches = ajouterEnTete(taches, t2);
@@ -97,10 +99,10 @@ int main(int argc, char **argv){
   afficherListeTaches(taches);
 
   int algo = 1; // 1= genetique 2= b&b
-  int heuristique = 1; 
-  int nbIterations = 50; 
-  
- 
+  int heuristique = 1;
+  int nbIterations = 50;
+
+
   int resultat = 0;
   switch(algo){
   case 1:
@@ -113,31 +115,31 @@ int main(int argc, char **argv){
     printf("l'algo n'exsite pas\n");
     break;
   }
-   
+
  printf("RESULTAT de l'algorithme : %i\n",resultat);
 
-  // 1. definir heuristique 
+  // 1. definir heuristique
   // choix de l'utilisateur (tapez 1 pour h1, 2 pour h2, etc.)
   //    --> un entier pour l'heuristique et un switch pour savoir quelle action réaliser dans l'algo
-  
-  // 2. appeler l'algo avec h en paramètre et la liste de taches 
-  //    --> une fonction par algo : int algoGenetique(int h,llist taches, int nbIterations) et 
-  //                                int algoBranchAndBound(int h, llist taches) 
+
+  // 2. appeler l'algo avec h en paramètre et la liste de taches
+  //    --> une fonction par algo : int algoGenetique(int h,llist taches, int nbIterations) et
+  //                                int algoBranchAndBound(int h, llist taches)
   //        qui renvoie une durée totale d'execution des taches
 
 
 
 
 
-  /* Fonctionement interface terminal 
+  /* Fonctionement interface terminal
      1. On demande le nombre de taches
      2. On demande les taches une par une
      3. On demande l'algo à appliquer
      4. On demande l'heuristique à utiliser
      5. Si c'est génétique : on demande le nombre d'itérations
-     6. On lance l'algo 
+     6. On lance l'algo
      7. On affiche le résultat
   */
 
   return 0;
-}  
+}
