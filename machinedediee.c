@@ -25,7 +25,7 @@ typedef element* llist;
 
 
 int sommeFinTache;
-tache tab[6];
+int nombreDeTache;
 
 llist ajouterEnTete(llist liste, tache tache1){
   element* nouvelElement = malloc(sizeof(element));
@@ -53,6 +53,18 @@ void afficherListeTaches(llist taches){
 }
 
 
+void mutation(tache tab[]){
+
+    int randy =  rand()%(nombreDeTache-1) +1;
+    int randy2 =  rand()%(nombreDeTache-1) +1;
+    while(randy == randy2){
+        randy2 =  rand()%(nombreDeTache-1) +1;
+    }
+    tache tmp = tab[randy];
+    tab[randy] = tab[randy2];
+    tab[randy2] = tmp;
+
+}
 
 int algoGenetique(int heuristique, llist taches, int nbIterations){
   return 20;
@@ -72,6 +84,7 @@ int main(int argc, char **argv){
     scanf("%d", &nbTache);
     int pi, ri, ti, famille;
     int i;
+    nombreDeTache = nbTache;
     tache tableau[nbTache];
     for(i = 0; i < nbTache; i++){
         printf("Definition de la tache %d : \n",i+1);
@@ -95,6 +108,13 @@ int main(int argc, char **argv){
         printf("| ti : %i",t.ti);
         printf("| famille : %i\n",t.famille);
     }
+
+    printf("Mutation ");
+    mutation(tableau);
+
+
+
+
     printf("\n****************Exemple Thibault : ****************\n");
   /* llist ma_liste1 = NULL;
   element *ma_liste = NULL;
