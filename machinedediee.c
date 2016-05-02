@@ -67,6 +67,35 @@ int algoBranchAndBound(int heuristique, llist taches){
 
 int main(int argc, char **argv){
 
+    int nbTache;
+    printf("Saisissez le nombre de tache : ");
+    scanf("%d", &nbTache);
+    int pi, ri, ti, famille;
+    int i;
+    tache tableau[nbTache];
+    for(i = 0; i < nbTache; i++){
+        printf("Definition de la tache %d : \n",i+1);
+        printf("Pi : ");
+        scanf("%d",&pi);
+        printf("Ri : ");
+        scanf("%d",&ri);
+        printf("Ti : ");
+        scanf("%d",&ti);
+        printf("Famille : ");
+        scanf("%d",&famille);
+        tache tmp = { .id = i+1, .pi = pi, .ri = ri, .ti = ti, .famille = famille };
+        tableau[i] = tmp;
+    }
+    printf("\n****************Affiche tab : ****************\n");
+    for(i = 0; i < nbTache; i++){
+        tache t = tableau[i];
+        printf("id : %i",t.id);
+        printf("| pi : %i",t.pi);
+        printf("| ri : %i",t.ri);
+        printf("| ti : %i",t.ti);
+        printf("| famille : %i\n",t.famille);
+    }
+    printf("\n****************Exemple Thibault : ****************\n");
   /* llist ma_liste1 = NULL;
   element *ma_liste = NULL;
   struct element *ma_liste3 = NULL;
