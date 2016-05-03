@@ -46,6 +46,30 @@ void afficherListeTaches(llist taches){
 }
 
 
+//fonction qui affecte les ti en fonction du tableau de tâches et qui retourne la somme des ci (pi+ti)
+int sommeCi(tache tab[], int size){
+
+	int i=0;
+
+	tab[0].ti = tab[0].ri;
+	for(i=1; i<size; i++){
+		int finPrecedent =  tab[i-1].ti + tab[i-1].pi;
+		if(tab[i].ri <= finPrecedent){
+			tab[i].ti = finPrecedent;
+		}else{
+			tab[i].ti = tab[i].ri;
+		}
+	}
+
+	int somme = 0;
+	int j=0;
+	for(j=0;j<size;j++){
+		somme += tab[j].ti + tab[j].pi;
+	}
+	return somme;
+}
+
+
 //retourne le tableau de tâches avec une solution réalisable (ti affectés)
 tache *realisable(tache tab[], int size){
 
@@ -176,7 +200,7 @@ int algoGenetique(int heuristique, tache tab[]){
   /* Heuristique 1 : croisement
                  2 : mutation
                  3 : aleatoire*/
-    switch(heuristique){
+  /*  switch(heuristique){
         int i;
     case 1:
         for(i = 0; i < nbIterations; i++){
@@ -199,7 +223,7 @@ int algoGenetique(int heuristique, tache tab[]){
                 mutation(tab);
             }
         }
-    }
+    }*/
 }
 
 int algoBranchAndBound(int heuristique, llist taches){
@@ -209,7 +233,7 @@ int algoBranchAndBound(int heuristique, llist taches){
 int main(int argc, char **argv){
 
     int nbTache;
-    printf("Saisissez le nombre de tache : ");
+   /* printf("Saisissez le nombre de tache : ");
     scanf("%d", &nbTache);
     int pi, ri, ti, famille;
     int i;
@@ -237,10 +261,11 @@ int main(int argc, char **argv){
     printf("\n****************Affiche tab : ****************\n");
     afficherTabTache(tableau, nombreDeTache);
 
-    /*printf("Mutation");
+    printf("Mutation");
     mutation(tableau);
     afficherTabTache(tableau, nombreDeTache);*/
-    algoGenetique(3,tableau);
+
+    //algoGenetique(3,tableau);
 
     printf("\n****************Exemple pour croisement : ****************\n");
   /* llist ma_liste1 = NULL;
@@ -256,7 +281,7 @@ int main(int argc, char **argv){
                7 sur les 3
   */
 
-  /*tache t1 = { .id = 1, .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
+  tache t1 = { .id = 1, .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
   tache t2 = { .id = 2, .pi = 3, .ri = 0, .ti = 0, .famille = 1 };
   tache t3 = { .id = 3, .pi = 7, .ri = 2, .ti = 0, .famille = 5 };
   tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
@@ -278,7 +303,7 @@ int main(int argc, char **argv){
   croisement(tab1,tab2, 6 , 6);
 
   afficherTabTache(tab1,6);
-  afficherTabTache(tab2,6);*/
+  afficherTabTache(tab2,6);
 
   int algo = 1; // 1= genetique 2= b&b
   int heuristique = 1;
@@ -288,6 +313,10 @@ int main(int argc, char **argv){
 
   tache *tab3 = realisable(tab2,6);
   afficherTabTache(tab3,6);
+
+  int somme = sommeCi(tab3,6);
+  printf("Somme des ci : %i\n", somme);
+
   /*int resultat = 0;
   switch(algo){
   case 1:
