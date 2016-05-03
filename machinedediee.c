@@ -43,6 +43,90 @@ void afficherListeTaches(llist taches){
   }
 }
 
+
+//retourne le tableau de tâches avec une solution réalisable (ti affectés)
+tache *realisable(tache tab[], int size){
+
+	//pi = le temps
+	//ri = date de debut min
+	//ti = date de debut effective
+	//famille = machines sur lesquelles s'execute la tâche
+
+	//1. on trie par ri
+	//2. on affecte les ti dans l'ordre
+
+	//exemple avec 7 tâches
+	//___---___________------------___________
+	//---________------------______------_____
+	//___--------______------______------_____
+
+	// sort du tableau par ri
+	int i = 0;
+	int j = 0;
+	tache tmp;
+	for(i; i<size; i++){
+		for(j=i+1; j<size; j++){
+			if(tab[i].ri > tab[j].ri){
+				tmp = tab[i];
+				tab[i] = tab[j];
+				tab[j] = tmp;
+			}
+		}
+	}
+
+	//affectation des ti
+	tab[0].ti = tab[0].ri;
+	for(i=1; i<size; i++){
+		int finPrecedent =  tab[i-1].ti + tab[i-1].pi;
+		if(tab[i].ri <= finPrecedent){
+			tab[i].ti = finPrecedent;
+		}else{
+			tab[i].ti = tab[i].ri;
+		}
+	}
+	return tab;
+}
+
+
+
+
+// pour pouvoir générer deux solutions réalisables
+// (on fait la meme chose (sort + affectation) sauf que l'on met la tâche avec le plus petit ri à la fin)
+tache *realisable2(tache tab[], int size){
+
+	// sort du tableau par ri
+	int i = 0;
+	int j = 0;
+	tache tmp;
+	for(i=0; i<size; i++){
+		for(j=i+1; j<size; j++){
+			if(tab[i].ri > tab[j].ri){
+				tmp = tab[i];
+				tab[i] = tab[j];
+				tab[j] = tmp;
+			}
+		}
+	}
+
+	//affectation des ti
+	tab[1].ti = tab[1].ri;
+	for(i=2; i<size; i++){
+		int finPrecedent =  tab[i-1].ti + tab[i-1].pi;
+		if(tab[i].ri <= finPrecedent){
+			tab[i].ti = finPrecedent;
+		}else{
+			tab[i].ti = tab[i].ri;
+		}
+	}
+	tab[0].ti = tab[size-1].ti + tab[size-1].pi;
+	return tab;
+}
+
+
+
+
+
+
 void mutation(tache tab[]){
     int randy =  rand()%nombreDeTache;
     int randy2 =  rand()%nombreDeTache;
@@ -171,6 +255,10 @@ int main(int argc, char **argv){
   int nbIterations = 50;
 
 
+    printf("\n****************Exemple pour solution réalisable : ****************\n");
+
+  tache *tab3 = realisable(tab2,6);
+  afficherTabTache(tab3,6);
   /*int resultat = 0;
   switch(algo){
   case 1:
