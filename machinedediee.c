@@ -54,9 +54,9 @@ void mutation(tache tab[]){
     tab[randy2] = tmp;
 }
 
-void croisement(tache tab1[], tache tab2[]){
-    int tailleTab1 = sizeof(*tab1);
-    int tailleTab2 = sizeof(*tab2);
+void croisement(tache tab1[], tache tab2[], int tailleTab1, int tailleTab2){
+  //  int tailleTab1 = sizeof(*tab1);
+   // int tailleTab2 = sizeof(*tab2);
     if(tailleTab1 != tailleTab2){
         printf("Les deux tableaux doivent etre de meme taille !\n");
         return EXIT_FAILURE;
@@ -75,7 +75,7 @@ void croisement(tache tab1[], tache tab2[]){
 void afficherTabTache(tache tableau[], int nombretache){
     int i;
     printf("\n");
-    printf("Taille du tab : %d"+sizeof(tableau)/sizeof(tache));
+  //  printf("Taille du tab : %d"+sizeof(tableau)/sizeof(tache));
     for(i = 0; i < nombretache; i++){
         tache t = tableau[i];
         printf("id : %i",t.id);
@@ -97,7 +97,7 @@ int algoBranchAndBound(int heuristique, llist taches){
 
 int main(int argc, char **argv){
 
-    int nbTache;
+  /*  int nbTache;
     printf("Saisissez le nombre de tache : ");
     scanf("%d", &nbTache);
     int pi, ri, ti, famille;
@@ -122,7 +122,7 @@ int main(int argc, char **argv){
 
     printf("Mutation ");
     mutation(tableau);
-    afficherTabTache(tableau, nombreDeTache);
+    afficherTabTache(tableau, nombreDeTache);*/
 
 
 
@@ -159,12 +159,12 @@ int main(int argc, char **argv){
   tache t12 = { .id = 60, .pi = 50, .ri = 0, .ti = 1, .famille = 60 };
 
   tache tab2[6] = {t7,t8,t9,t10,t11,t12};
-  /*afficherTabTache(tab1, 6);
+  afficherTabTache(tab1,6);
   afficherTabTache(tab2,6);
 
-  croisement(tab1,tab2);
+  croisement(tab1,tab2, 6 , 6);
   afficherTabTache(tab1,6);
-  afficherTabTache(tab2,6);*/
+  afficherTabTache(tab2,6);
 
   int algo = 1; // 1= genetique 2= b&b
   int heuristique = 1;
