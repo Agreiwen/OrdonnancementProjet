@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 struct tache {
   int id;
@@ -22,6 +23,7 @@ struct element
 typedef element* llist;
 int sommeFinTache;
 int nombreDeTache;
+int nbIterations;
 
 llist ajouterEnTete(llist liste, tache tache1){
   element* nouvelElement = malloc(sizeof(element));
@@ -148,7 +150,7 @@ void croisement(tache tab1[], tache tab2[], int tailleTab1, int tailleTab2){
     else{
         int coupure = 3*tailleTab1/4;
         int i;
-        for(i = coupure; i < tailleTab1; i++){
+        for(i = coupure-1; i < tailleTab1; i++){
             tache tmp = tab1[i];
             tab1[i] = tab2[i];
             tab2[i] = tmp;
@@ -170,9 +172,34 @@ void afficherTabTache(tache tableau[], int nombretache){
     }
 }
 
-int algoGenetique(int heuristique, llist taches, int nbIterations){
-  return 20;
-
+int algoGenetique(int heuristique, tache tab[]){
+  /* Heuristique 1 : croisement
+                 2 : mutation
+                 3 : aleatoire*/
+    switch(heuristique){
+        int i;
+    case 1:
+        for(i = 0; i < nbIterations; i++){
+            //croisement(tab);
+        }
+    case 2:
+        for(i = 0; i < nbIterations; i++){
+            mutation(tab);
+        }
+    case 3:
+        srand(time(NULL));
+        for(i = 0; i < nbIterations; i++){
+            float r;
+            r = round((float)(rand()) / (float) RAND_MAX);
+            int res = (int)r;
+            if(res == 1){
+                croisement(tab);
+            }
+            else{
+                mutation(tab);
+            }
+        }
+    }
 }
 
 int algoBranchAndBound(int heuristique, llist taches){
@@ -181,7 +208,7 @@ int algoBranchAndBound(int heuristique, llist taches){
 
 int main(int argc, char **argv){
 
-  /*  int nbTache;
+    int nbTache;
     printf("Saisissez le nombre de tache : ");
     scanf("%d", &nbTache);
     int pi, ri, ti, famille;
@@ -201,30 +228,26 @@ int main(int argc, char **argv){
         tache tmp = { .id = i+1, .pi = pi, .ri = ri, .ti = ti, .famille = famille };
         tableau[i] = tmp;
     }
+
+    int iteration;
+    printf("Saisissez un nombre d'iteration : ");
+    scanf("%d",&iteration);
+    nbIterations = iteration;
+
     printf("\n****************Affiche tab : ****************\n");
     afficherTabTache(tableau, nombreDeTache);
 
-    printf("Mutation ");
+    /*printf("Mutation");
     mutation(tableau);
     afficherTabTache(tableau, nombreDeTache);*/
-
-
-
+    algoGenetique(3,tableau);
 
     printf("\n****************Exemple pour croisement : ****************\n");
   /* llist ma_liste1 = NULL;
   element *ma_liste = NULL;
   struct element *ma_liste3 = NULL;
-  */
 
-  tache t1 = { .id = 1, .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
-  tache t2 = { .id = 2, .pi = 3, .ri = 0, .ti = 0, .famille = 1 };
-  tache t3 = { .id = 3, .pi = 7, .ri = 2, .ti = 0, .famille = 5 };
-  tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
-  tache t5 = { .id = 5, .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
-  tache t6 = { .id = 6, .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
-
-  /* famille : 1 sur la machine 1 uniquement
+  famille : 1 sur la machine 1 uniquement
                2 sur la 2
                3 sur la 3
                4 sur 1 et 2
@@ -233,8 +256,12 @@ int main(int argc, char **argv){
                7 sur les 3
   */
 
-  tache tab1[6] = {t1,t2,t3,t4,t5,t6};
-
+  /*tache t1 = { .id = 1, .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
+  tache t2 = { .id = 2, .pi = 3, .ri = 0, .ti = 0, .famille = 1 };
+  tache t3 = { .id = 3, .pi = 7, .ri = 2, .ti = 0, .famille = 5 };
+  tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
+  tache t5 = { .id = 5, .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
+  tache t6 = { .id = 6, .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
   tache t7 = { .id = 10, .pi = 40, .ri = 50, .ti = 1, .famille = 70 };
   tache t8 = { .id = 20, .pi = 20, .ri = 0, .ti = 1, .famille = 10 };
   tache t9 = { .id = 30, .pi = 10, .ri = 20, .ti = 1, .famille = 50 };
@@ -242,17 +269,19 @@ int main(int argc, char **argv){
   tache t11 = { .id = 50, .pi = 30, .ri = 30, .ti = 1, .famille = 30 };
   tache t12 = { .id = 60, .pi = 50, .ri = 0, .ti = 1, .famille = 60 };
 
+  tache tab1[6] = {t1,t2,t3,t4,t5,t6};
   tache tab2[6] = {t7,t8,t9,t10,t11,t12};
+
   afficherTabTache(tab1,6);
   afficherTabTache(tab2,6);
 
   croisement(tab1,tab2, 6 , 6);
+
   afficherTabTache(tab1,6);
-  afficherTabTache(tab2,6);
+  afficherTabTache(tab2,6);*/
 
   int algo = 1; // 1= genetique 2= b&b
   int heuristique = 1;
-  int nbIterations = 50;
 
 
     printf("\n****************Exemple pour solution réalisable : ****************\n");
