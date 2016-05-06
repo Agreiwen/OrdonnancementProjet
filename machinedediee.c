@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
 
 /* Definition structure de tache */
 struct tache {
@@ -60,9 +61,28 @@ struct histo
 
 typedef element* histo;
 
+
+
+
+bool equalsTache(tache t1, tache t2){
+	return (t1.id == t2.id);/* && (t1.pi == t2.pi) && (t1.ri == t2.ri) && (t1.ti = t2.ti) && (t1.famille == t2.famille))*/
+}
+
+
+bool equalsTab(tache tab1[], tache tab2[], int size){
+	int i=0;
+	for(i;i<size;i++){
+		if(equalsTache(tab1[i], tab2[i])==false){
+            return false;
+		}
+	}
+	return true;
+}
+
+
 histo ajouterTete(histo taches, tache sol[]){
-  element *nouvelElmt = malloc(sizeof(element));
-  nouvelElmt->t = sol;
+  histo nouvelElmt = malloc(sizeof(element));
+  nouvelElmt->t = *sol;
   nouvelElmt->next = taches;
   return nouvelElmt;
 }
@@ -347,6 +367,22 @@ int main(int argc, char **argv){
   taches = ajouterEnTete(taches, t6);
 
   afficherListeTaches(taches);
+
+
+
+    /* tests fonctions equals */
+    bool testEqualsFalse = equalsTache(t1,t2);
+    bool testEqualsTrue = equalsTache(t1,t1);
+
+
+    int size = sizeof(tab1)/sizeof(tab1[0]); //taille du tableau
+    bool testEqualsTabFalse = equalsTab(tab1,tab2,size);
+    bool testEqualsTabTrue = equalsTab(tab1,tab1,size);
+
+    printf("t1 == t2 ? %s\n", testEqualsFalse?"true":"false");
+    printf("t1 == t1 ? %s\n", testEqualsTrue?"true":"false");
+    printf("tab1 == tab2 ? %s\n", testEqualsTabFalse?"true":"false");
+    printf("tab1 == tab1 ? %s\n", testEqualsTabTrue?"true":"false");
 
   /*int resultat = 0;
   switch(algo){
