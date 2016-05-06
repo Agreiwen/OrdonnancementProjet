@@ -52,7 +52,6 @@ void afficherListeTaches(llist taches){
 
 /* Definition d'une structure de liste de tableaux (solutions) pour avoir un historique des solutions */
 
-typedef struct element element;
 struct histo
 {
     tache *sol;
