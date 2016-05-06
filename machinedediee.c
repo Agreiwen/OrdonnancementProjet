@@ -5,7 +5,9 @@
 #include <math.h>
 #include <stdbool.h>
 
+
 /* Definition structure de tache */
+
 struct tache {
   int id;
   int pi;
@@ -17,6 +19,7 @@ typedef struct tache tache;
 
 
 /* Definition de la structure d'une liste chainee de taches pour le branch and bounds */
+
 typedef struct element element;
 struct element
 {
@@ -55,14 +58,23 @@ void afficherListeTaches(llist taches){
 typedef struct element element;
 struct histo
 {
+    int *taille;
     tache *sol;
     struct element *nxt;
 };
 
 typedef element* histo;
 
+histo ajouterTete(histo taches, tache sol[]){
+  histo nouvelElmt = malloc(sizeof(element));
+  nouvelElmt->t = *sol;
+  nouvelElmt->next = taches;
+  nouvelElmt->taille = 10;
+  return nouvelElmt;
+}
 
 
+/* Definition des méthodes equals sur les taches et les tableaux de taches pour remplir l'historique */
 
 bool equalsTache(tache t1, tache t2){
 	return (t1.id == t2.id);/* && (t1.pi == t2.pi) && (t1.ri == t2.ri) && (t1.ti = t2.ti) && (t1.famille == t2.famille))*/
@@ -79,13 +91,6 @@ bool equalsTab(tache tab1[], tache tab2[], int size){
 	return true;
 }
 
-
-histo ajouterTete(histo taches, tache sol[]){
-  histo nouvelElmt = malloc(sizeof(element));
-  nouvelElmt->t = *sol;
-  nouvelElmt->next = taches;
-  return nouvelElmt;
-}
 
 //fonction qui affecte les ti en fonction du tableau de tâches et qui retourne la somme des ci (pi+ti)
 int sommeCi(tache tab[], int size){
@@ -241,7 +246,8 @@ int algoGenetique(int heuristique, tache tab[]){
   /* Heuristique 1 : croisement
                  2 : mutation
                  3 : aleatoire*/
-  /*  switch(heuristique){
+
+   /* switch(heuristique){
         int i;
     case 1:
         for(i = 0; i < nbIterations; i++){
@@ -349,6 +355,18 @@ int main(int argc, char **argv){
   int algo = 1; // 1= genetique 2= b&b
   int heuristique = 1;
 
+  /* Test genetique full croisement */
+
+    histo listeSol = NULL;
+    listeSol = ajouterTete(listeSol, tab1);
+    listeSol = ajouterTete(listeSol, tab2);
+
+    tache tab1Aux[6];
+    tache tab2Aux[6];
+    int i;
+    for(i = 0; i < 50; i++){
+        printf("%d",histo.taille);
+    }
 
     printf("\n****************Exemple pour solution realisable : ****************\n");
 
