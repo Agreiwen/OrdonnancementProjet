@@ -55,7 +55,6 @@ void afficherListeTaches(llist taches){
 
 /* Definition d'une structure de liste de tableaux (solutions) pour avoir un historique des solutions */
 
-typedef struct element element;
 struct histo
 {
     int *taille;
@@ -343,6 +342,11 @@ int main(int argc, char **argv){
 
   tache tab1[6] = {t1,t2,t3,t4,t5,t6};
   tache tab2[6] = {t7,t8,t9,t10,t11,t12};
+
+  histo test = NULL;
+  test = ajouterTete(test,tab1);
+  test = ajouterTete(test,tab2);
+
 
   afficherTabTache(tab1,6);
   afficherTabTache(tab2,6);
