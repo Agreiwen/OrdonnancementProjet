@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 
+/* Definition structure de tache */
 struct tache {
   int id;
   int pi;
@@ -13,6 +14,8 @@ struct tache {
 };
 typedef struct tache tache;
 
+
+/* Definition de la structure d'une liste chainee de taches pour le branch and bounds */
 typedef struct element element;
 struct element
 {
@@ -45,6 +48,24 @@ void afficherListeTaches(llist taches){
   }
 }
 
+
+/* Definition d'une structure de liste de tableaux (solutions) pour avoir un historique des solutions */
+
+typedef struct element element;
+struct histo
+{
+    tache *sol;
+    struct element *nxt;
+};
+
+typedef element* histo;
+
+histo ajouterTete(histo taches, tache sol[]){
+  element *nouvelElmt = malloc(sizeof(element));
+  nouvelElmt->t = sol;
+  nouvelElmt->next = taches;
+  return nouvelElmt;
+}
 
 //fonction qui affecte les ti en fonction du tableau de tâches et qui retourne la somme des ci (pi+ti)
 int sommeCi(tache tab[], int size){
@@ -309,13 +330,23 @@ int main(int argc, char **argv){
   int heuristique = 1;
 
 
-    printf("\n****************Exemple pour solution réalisable : ****************\n");
+    printf("\n****************Exemple pour solution realisable : ****************\n");
 
   tache *tab3 = realisable(tab2,6);
   afficherTabTache(tab3,6);
 
   int somme = sommeCi(tab3,6);
   printf("Somme des ci : %i\n", somme);
+
+  llist taches = NULL;
+  taches = ajouterEnTete(taches, t1);
+  taches = ajouterEnTete(taches, t2);
+  taches = ajouterEnTete(taches, t3);
+  taches = ajouterEnTete(taches, t4);
+  taches = ajouterEnTete(taches, t5);
+  taches = ajouterEnTete(taches, t6);
+
+  afficherListeTaches(taches);
 
   /*int resultat = 0;
   switch(algo){
