@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
-
+#include <limits.h>
 
 /* Definition structure de tache */
 
@@ -40,23 +40,23 @@ struct elementhisto
 typedef struct elementhisto elementhisto;
 typedef elementhisto* histo;
 
-int sommeFinTache;
+int sommeFinTache = INT_MAX;
 int nombreDeTache;
-int nbIterations;
+int nbIterations = 1000;
 
 histo ajouterTete(histo taches, tache sol[]){
-    printf("j'ajoute un element : \n");
+    //printf("j'ajoute un element : \n");
   elementhisto* nouvelElmt = malloc(sizeof(elementhisto));
   elementhisto *tmp = taches;
   nouvelElmt->sol = sol;
   nouvelElmt->nxt = taches;
   if(tmp==NULL){
         nouvelElmt->taille = 1;
-        printf("C'est le premier element de la liste donc ma taille est de %d \n",nouvelElmt->taille);
+        //printf("C'est le premier element de la liste donc ma taille est de %d \n",nouvelElmt->taille);
        // nouvelElmt->taille = 1;
   }else{
       nouvelElmt->taille = (tmp->taille)+1;
-      printf("C'est pas le premier element de la liste, la taille c'est %d + 1 = %d \n",tmp->taille,nouvelElmt->taille);
+      //printf("C'est pas le premier element de la liste, la taille c'est %d + 1 = %d \n",tmp->taille,nouvelElmt->taille);
 
   }
 
@@ -250,7 +250,19 @@ int sommeCiFamilles(tache tab[], int size){
 	return somme;
 }
 
-
+tache* getTab(histo histo, int a){
+    elementhisto *tab = histo;
+    int i=0;
+    while(tab!=NULL){
+        if(i==a){
+            return tab->sol;
+        }
+        tab=tab->nxt;
+        i++;
+    }
+   printf("\ERREUR IMPOSSIBLE DE TROUVER UN TABLEAU A L'INDICE %i\n",a);
+   return EXIT_FAILURE;
+}
 
 
 //fonction qui affecte les ti en fonction du tableau de tâches et qui retourne la somme des ci (pi+ti)
@@ -360,11 +372,13 @@ tache *realisable2(tache tab[], int size){
 
 
 
-void mutation(tache tab[]){
-    int randy =  rand()%nombreDeTache;
-    int randy2 =  rand()%nombreDeTache;
+void mutation(tache tab[], int size){
+
+
+    int randy =  rand()%size;
+    int randy2 =  rand()%size;
     while(randy == randy2){
-        randy2 =  rand()%nombreDeTache;
+        randy2 =  rand()%size;
     }
     tache tmp = tab[randy];
     tab[randy] = tab[randy2];
@@ -403,35 +417,88 @@ void afficherTabTache(tache tableau[], int nombretache){
     }
 }
 
-int algoGenetique(int heuristique, tache tab[]){
+tache* algoGenetique(int heuristique, histo histo, int nbIterations){
+    tache *tabFinal = malloc(6*sizeof(tache));
+
+    tache *tab1;
+    tache *tab2;
   /* Heuristique 1 : croisement
                  2 : mutation
                  3 : aleatoire*/
-
-   /* switch(heuristique){
+    //printf("HEURISTIQUE %i\n",heuristique);
+   switch(heuristique){
         int i;
     case 1:
         for(i = 0; i < nbIterations; i++){
             //croisement(tab);
         }
+        break;
     case 2:
         for(i = 0; i < nbIterations; i++){
-            mutation(tab);
+            srand(time(NULL));
+            int rnd = rand()%(histo->taille-1)+1;
+            tache *tab = getTab(histo,rnd);
+             int size = sizeof(tab)/sizeof(tab[0]);
+            mutation(tab, size);
         }
+        break;
     case 3:
+
         srand(time(NULL));
+        int rnd1 = rand()%(histo->taille-1)+1;
+        int rnd2 = rand()%(histo->taille-1)+1;
+        tab1 = getTab(histo,rnd1);
+        tab2 = getTab(histo,rnd2);
         for(i = 0; i < nbIterations; i++){
+
             float r;
             r = round((float)(rand()) / (float) RAND_MAX);
             int res = (int)r;
+
             if(res == 1){
-                croisement(tab);
+                //int sizeT1 = sizeof(tab1)/sizeof(tab1[0]);
+                //int sizeT2 = sizeof(tab2)/sizeof(tab2[0]);
+                croisement(tab1,tab2,6,6);
+                int somme1 = sommeCiFamilles(tab1,6);
+                int somme2 = sommeCiFamilles(tab2,6);
+                if(somme1 < sommeFinTache) {
+                    sommeFinTache = somme1;
+                    //printf("SOMME FIN TACHES%i\n",sommeFinTache);
+                    memcpy(tabFinal,tab1,6*sizeof(tache));
+                    //tabFinal = tab1;
+                    //afficherTabTache(tabFinal,6);
+                }
+                if(somme2 < sommeFinTache){
+                    sommeFinTache = somme2;
+                    //printf("SOMME FIN TACHES%i\n",sommeFinTache);
+                    memcpy(tabFinal,tab2,6*sizeof(tache));
+                    //tabFinal = tab2;
+                    //afficherTabTache(tabFinal,6);
+                }
+                histo = ajouterTete(histo,tab1);
+                histo = ajouterTete(histo,tab2);
             }
             else{
-                mutation(tab);
+                //int size = sizeof(tab1)/sizeof(tab1[0]);
+                mutation(tab1, 6);
+                int somme = sommeCiFamilles(tab1,6);
+                if(somme < sommeFinTache){
+                    sommeFinTache = somme;
+                    //printf("SOMME FIN TACHES%i\n",sommeFinTache);
+                     memcpy(tabFinal,tab1,6*sizeof(tache));
+                    //tabFinal = tab1;
+                    //afficherTabTache(tabFinal,6);
+                }
+                histo = ajouterTete(histo, tab1);
             }
         }
-    }*/
+        break;
+    }
+   afficherTabTache(tabFinal,6);
+   int s = sommeCiFamilles(tabFinal,6);
+   //printf("FDP : %i\n",s);
+   //printf("RESULTAT DE L'ALGORITHME %i\n",sommeFinTache);
+   return 0;
 }
 
 int algoBranchAndBound(int heuristique, llist taches){
@@ -489,13 +556,13 @@ int main(int argc, char **argv){
                7 sur les 3
   */
 
-  tache t1 = { .id = 1, .pi = 5, .ri = 5, .ti = 0, .famille = 7 };
-  tache t2 = { .id = 2, .pi = 3, .ri = 0, .ti = 0, .famille = 1 };
-  tache t3 = { .id = 3, .pi = 7, .ri = 2, .ti = 0, .famille = 5 };
-  tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
-  tache t5 = { .id = 5, .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
-  tache t6 = { .id = 6, .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
-  tache t7 = { .id = 10, .pi = 40, .ri = 50, .ti = 1, .famille = 3 };
+  tache t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
+  tache t2 = { .id = 2, .pi = 3, .ri = 2, .ti = 0, .famille = 1 };
+  tache t3 = { .id = 3, .pi = 2, .ri = 5, .ti = 0, .famille = 5 };
+  tache t4 = { .id = 4, .pi = 5, .ri = 6, .ti = 0, .famille = 2 };
+  tache t5 = { .id = 5, .pi = 8, .ri = 3, .ti = 0, .famille = 3 };
+  tache t6 = { .id = 6, .pi = 1, .ri = 1, .ti = 0, .famille = 6 };
+  tache t7 = { .id = 10, .pi = 40, .ri = 50, .ti = 1, .famille = 1 };
   tache t8 = { .id = 20, .pi = 20, .ri = 0, .ti = 1, .famille = 1 };
   tache t9 = { .id = 30, .pi = 10, .ri = 20, .ti = 1, .famille = 5 };
   tache t10 = { .id = 40, .pi = 80, .ri = 0, .ti = 1, .famille = 4 };
@@ -504,6 +571,7 @@ int main(int argc, char **argv){
 
   tache tab1[6] = {t1,t2,t3,t4,t5,t6};
   tache tab2[6] = {t7,t8,t9,t10,t11,t12};
+  tache tab4[6] = {t2,t4,t5,t6,t1,t2};
 
  /* histo test = NULL;
   test = ajouterTete(test,tab1);
@@ -519,15 +587,15 @@ int main(int argc, char **argv){
   afficherTabTache(tab2,6);*/
 
   int algo = 1; // 1= genetique 2= b&b
-  int heuristique = 1;
+  int heuristique = 3;
 
   /* Test genetique full croisement */
 
     histo listeSol = NULL;
     listeSol = ajouterTete(listeSol, tab1);
-    listeSol = ajouterTete(listeSol, tab2);
-    listeSol = ajouterTete(listeSol, tab2);
-    listeSol = ajouterTete(listeSol, tab2);
+    listeSol = ajouterTete(listeSol, tab4);
+    //listeSol = ajouterTete(listeSol, tab2);
+    //listeSol = ajouterTete(listeSol, tab2);
     afficherTailleListeTabs(listeSol);
     tache tab1Aux[6];
     tache tab2Aux[6];
@@ -544,8 +612,8 @@ int main(int argc, char **argv){
 
   int sommeSansFamille = sommeCi(tab3,6);
   int somme = sommeCiFamilles(tab3,6);
-  printf("Somme des ci sans familles (1 machine) : %i\n",sommeSansFamille);
-  printf("Somme des ci avec familles (3 machines): %i\n", somme);
+  printf("\nSomme des ci sans familles (1 machine) : %i\n",sommeSansFamille);
+  printf("Somme des ci avec familles (3 machines): %i\n\n", somme);
 
   llist taches = NULL;
   taches = ajouterEnTete(taches, t1);
@@ -573,10 +641,14 @@ int main(int argc, char **argv){
     printf("tab1 == tab2 ? %s\n", testEqualsTabFalse?"true":"false");
     printf("tab1 == tab1 ? %s\n", testEqualsTabTrue?"true":"false");
 
-  /*int resultat = 0;
+    printf("\n\nEXECUTION DE L'ALGORITHME\n\n");
+
+  int resultat = 0;
+  algo = 1;
+  tache *finalTAB;
   switch(algo){
   case 1:
-    resultat = algoGenetique(heuristique, taches, nbIterations);
+    resultat = algoGenetique(heuristique, listeSol, nbIterations);
     break;
   case 2:
     resultat = algoBranchAndBound(heuristique, taches);
@@ -586,7 +658,11 @@ int main(int argc, char **argv){
     break;
   }
 
- printf("RESULTAT de l'algorithme : %i\n",resultat);*/
+printf("RESULTAT de l'algorithme : %i\n",sommeFinTache);
+//afficherTabTache(finalTAB,6);
+//int s = sommeCiFamilles(finalTAB,6);
+//printf("%i\n",s);
+
 
   // 1. definir heuristique
   // choix de l'utilisateur (tapez 1 pour h1, 2 pour h2, etc.)
