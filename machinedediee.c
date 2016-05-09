@@ -28,9 +28,41 @@ struct element
 };
 
 typedef element* llist;
+
+struct elementhisto
+{
+    int taille;
+    tache *sol;
+    struct elementhisto *nxt;
+};
+// Erreur : Soit tu créer une structure histo et tu l'utilise soit tu défini histo en tant que liste d'element mais pas les deux
+//typedef struct histo histo;
+typedef struct elementhisto elementhisto;
+typedef elementhisto* histo;
+
 int sommeFinTache;
 int nombreDeTache;
 int nbIterations;
+
+histo ajouterTete(histo taches, tache sol[]){
+    printf("j'ajoute un element : \n");
+  elementhisto* nouvelElmt = malloc(sizeof(elementhisto));
+  elementhisto *tmp = taches;
+  nouvelElmt->sol = sol;
+  nouvelElmt->nxt = taches;
+  if(tmp==NULL){
+        nouvelElmt->taille = 1;
+        printf("C'est le premier element de la liste donc ma taille est de %d \n",nouvelElmt->taille);
+       // nouvelElmt->taille = 1;
+  }else{
+      nouvelElmt->taille = (tmp->taille)+1;
+      printf("C'est pas le premier element de la liste, la taille c'est %d + 1 = %d \n",tmp->taille,nouvelElmt->taille);
+
+  }
+
+  return nouvelElmt;
+}
+
 
 llist ajouterEnTete(llist liste, tache tache1){
   element* nouvelElement = malloc(sizeof(element));
@@ -52,25 +84,23 @@ void afficherListeTaches(llist taches){
   }
 }
 
-
+void afficherTailleListeTabs(histo taches){
+  elementhisto *tmp = taches;
+  printf("Liste des taches :\n");
+  printf("Taille de la liste de tab : %d",tmp->taille);
+  /*while(tmp != NULL){
+    printf("id : %i",tmp->t.id);
+    printf("| pi : %i",tmp->t.pi);
+    printf("| ri : %i",tmp->t.ri);
+    printf("| ti : %i",tmp->t.ti);
+    printf("| famille : %i\n",tmp->t.famille);
+    tmp = tmp->next;
+  }*/
+}
 /* Definition d'une structure de liste de tableaux (solutions) pour avoir un historique des solutions */
 
-struct histo
-{
-    int *taille;
-    tache *sol;
-    struct element *nxt;
-};
 
-typedef element* histo;
 
-histo ajouterTete(histo taches, tache sol[]){
-  histo nouvelElmt = malloc(sizeof(element));
-  nouvelElmt->t = *sol;
-  nouvelElmt->next = taches;
-  nouvelElmt->taille = 10;
-  return nouvelElmt;
-}
 
 
 /* Definition des méthodes equals sur les taches et les tableaux de taches pour remplir l'historique */
@@ -343,18 +373,18 @@ int main(int argc, char **argv){
   tache tab1[6] = {t1,t2,t3,t4,t5,t6};
   tache tab2[6] = {t7,t8,t9,t10,t11,t12};
 
-  histo test = NULL;
+ /* histo test = NULL;
   test = ajouterTete(test,tab1);
   test = ajouterTete(test,tab2);
+*/
 
-
-  afficherTabTache(tab1,6);
+/*  afficherTabTache(tab1,6);
   afficherTabTache(tab2,6);
 
   croisement(tab1,tab2, 6 , 6);
 
   afficherTabTache(tab1,6);
-  afficherTabTache(tab2,6);
+  afficherTabTache(tab2,6);*/
 
   int algo = 1; // 1= genetique 2= b&b
   int heuristique = 1;
@@ -364,13 +394,15 @@ int main(int argc, char **argv){
     histo listeSol = NULL;
     listeSol = ajouterTete(listeSol, tab1);
     listeSol = ajouterTete(listeSol, tab2);
-
+    listeSol = ajouterTete(listeSol, tab2);
+    listeSol = ajouterTete(listeSol, tab2);
+    afficherTailleListeTabs(listeSol);
     tache tab1Aux[6];
     tache tab2Aux[6];
     int i;
-    for(i = 0; i < 50; i++){
-        printf("%d",histo.taille);
-    }
+   /* for(i = 0; i < 50; i++){
+        printf("%d",listeSol->taille);
+    }*/
 
     printf("\n****************Exemple pour solution realisable : ****************\n");
 
