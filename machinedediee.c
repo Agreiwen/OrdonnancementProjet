@@ -121,6 +121,138 @@ bool equalsTab(tache tab1[], tache tab2[], int size){
 }
 
 
+
+
+int max2(int a, int b){
+    if(a <= b){
+        return b;
+    }
+    else{
+        return a;
+    }
+}
+
+int max3(int a, int b, int c){
+    return max2(max2(a,b),c);
+}
+
+int sommeCiFamilles(tache tab[], int size){
+
+	int i=0;
+	int tM1 = 0;
+	int tM2 = 0;
+	int tM3 = 0;
+    int max = 0;
+	//attribution des pi
+	for(i=0; i<size; i++){
+		//int finPrecedent =  tab[i-1].ti + tab[i-1].pi;
+
+		switch(tab[i].famille){
+			case 1 : //M1
+				if(tab[i].ri <= tM1){
+					tab[i].ti = tM1;
+				}else{
+					tab[i].ti = tab[i].ri;
+				}
+				tM1 = tab[i].ti + tab[i].pi;
+				break;
+			case 2 : //M2
+				if(tab[i].ri <= tM2){
+					tab[i].ti = tM2;
+				}else{
+					tab[i].ti = tab[i].ri;
+				}
+				tM2 = tab[i].ti + tab[i].pi;
+				break;
+			case 3 : //M3
+				if(tab[i].ri <= tM3){
+					tab[i].ti = tM3;
+				}else{
+					tab[i].ti = tab[i].ri;
+				}
+				tM3 = tab[i].ti + tab[i].pi;
+				break;
+			case 4: //M1 et M2
+				if(tM1 <= tM2){
+					if(tab[i].ri <= tM2){
+						tab[i].ti = tM2;
+					}else{
+						tab[i].ti = tab[i].ri;
+					}
+
+				}else{
+					if(tab[i].ri <= tM1){
+						tab[i].ti = tM1;
+					}else{
+						tab[i].ti = tab[i].ri;
+					}
+				}
+				tM1 = tab[i].ti +tab[i].pi;
+				tM2 = tab[i].ti +tab[i].pi;
+				break;
+			case 5 : // M2 et M3
+				if(tM2 <= tM3){
+					if(tab[i].ri <= tM3){
+						tab[i].ti = tM3;
+					}else{
+						tab[i].ti = tab[i].ri;
+					}
+
+				}else{
+					if(tab[i].ri <= tM2){
+						tab[i].ti = tM2;
+					}else{
+						tab[i].ti = tab[i].ri;
+					}
+				}
+				tM2 = tab[i].ti +tab[i].pi;
+				tM3 = tab[i].ti +tab[i].pi;
+				break;
+			case 6 : // M1 et M3
+				if(tM1 <= tM3){
+					if(tab[i].ri <= tM3){
+						tab[i].ti = tM3;
+					}else{
+						tab[i].ti = tab[i].ri;
+					}
+
+				}else{
+					if(tab[i].ri <= tM1){
+						tab[i].ti = tM1;
+					}else{
+						tab[i].ti = tab[i].ri;
+					}
+				}
+				tM1 = tab[i].ti +tab[i].pi;
+				tM3 = tab[i].ti +tab[i].pi;
+				break;
+			case 7 : // M1 M2 et M3
+
+                max = max3(tM1,tM2,tM3);
+				if(tab[i].ri <= max){
+					tab[i].ti = max;
+				}else{
+					tab[i].ti = tab[i].ri;
+				}
+				tM1 = tab[i].ti +tab[i].pi;
+				tM2 = tab[i].ti +tab[i].pi;
+				tM3 = tab[i].ti +tab[i].pi;
+				break;
+		}
+	}
+
+	//somme des ci
+	int somme = 0;
+	int j=0;
+	for(j=0;j<size;j++){
+		somme += tab[j].ti + tab[j].pi;
+	}
+	return somme;
+}
+
+
+
+
 //fonction qui affecte les ti en fonction du tableau de tâches et qui retourne la somme des ci (pi+ti)
 int sommeCi(tache tab[], int size){
 
@@ -363,12 +495,12 @@ int main(int argc, char **argv){
   tache t4 = { .id = 4, .pi = 1, .ri = 0, .ti = 0, .famille = 4 };
   tache t5 = { .id = 5, .pi = 2, .ri = 3, .ti = 0, .famille = 3 };
   tache t6 = { .id = 6, .pi = 4, .ri = 0, .ti = 0, .famille = 6 };
-  tache t7 = { .id = 10, .pi = 40, .ri = 50, .ti = 1, .famille = 70 };
-  tache t8 = { .id = 20, .pi = 20, .ri = 0, .ti = 1, .famille = 10 };
-  tache t9 = { .id = 30, .pi = 10, .ri = 20, .ti = 1, .famille = 50 };
-  tache t10 = { .id = 40, .pi = 80, .ri = 0, .ti = 1, .famille = 40 };
-  tache t11 = { .id = 50, .pi = 30, .ri = 30, .ti = 1, .famille = 30 };
-  tache t12 = { .id = 60, .pi = 50, .ri = 0, .ti = 1, .famille = 60 };
+  tache t7 = { .id = 10, .pi = 40, .ri = 50, .ti = 1, .famille = 3 };
+  tache t8 = { .id = 20, .pi = 20, .ri = 0, .ti = 1, .famille = 1 };
+  tache t9 = { .id = 30, .pi = 10, .ri = 20, .ti = 1, .famille = 5 };
+  tache t10 = { .id = 40, .pi = 80, .ri = 0, .ti = 1, .famille = 4 };
+  tache t11 = { .id = 50, .pi = 30, .ri = 30, .ti = 1, .famille = 3 };
+  tache t12 = { .id = 60, .pi = 50, .ri = 0, .ti = 1, .famille = 6 };
 
   tache tab1[6] = {t1,t2,t3,t4,t5,t6};
   tache tab2[6] = {t7,t8,t9,t10,t11,t12};
@@ -409,8 +541,11 @@ int main(int argc, char **argv){
   tache *tab3 = realisable(tab2,6);
   afficherTabTache(tab3,6);
 
-  int somme = sommeCi(tab3,6);
-  printf("Somme des ci : %i\n", somme);
+
+  int sommeSansFamille = sommeCi(tab3,6);
+  int somme = sommeCiFamilles(tab3,6);
+  printf("Somme des ci sans familles (1 machine) : %i\n",sommeSansFamille);
+  printf("Somme des ci avec familles (3 machines): %i\n", somme);
 
   llist taches = NULL;
   taches = ajouterEnTete(taches, t1);
