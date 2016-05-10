@@ -7,6 +7,21 @@
 #include <limits.h>
 
 /* Definition structure de tache */
+typedef struct noeud noeud;
+typedef struct listnoeud listnoeud;
+
+struct noeud
+{
+    int val;
+    listnoeud *enfants;
+};
+
+struct listnoeud
+{
+    noeud *node;
+    listnoeud *next;
+};
+
 
 struct tache {
   int id;
@@ -389,7 +404,7 @@ void mutation(tache tab[], int size){
 
 /* Methode qui permet de realiser un croisement entre deux solutions */
 
-void croisement(tache tab1[], tache tab2[], int tailleTab1, int tailleTab2){
+void croisement(tache **tab1, tache **tab2, int tailleTab1, int tailleTab2){
     if(tailleTab1 != tailleTab2){
         printf("Les deux tableaux doivent etre de meme taille !\n");
         return EXIT_FAILURE;
@@ -398,7 +413,7 @@ void croisement(tache tab1[], tache tab2[], int tailleTab1, int tailleTab2){
         int coupure = 3*tailleTab1/4;
         int i;
         for(i = coupure-1; i < tailleTab1; i++){
-            tache tmp = tab1[i];
+            tache *tmp = tab1[i];
             tab1[i] = tab2[i];
             tab2[i] = tmp;
         }
@@ -447,7 +462,7 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
             r = round((float)(rand()) / (float) RAND_MAX);
             int res = (int)r;
             if(res == 1){
-                croisement(tab1,tab2,nombreDeTache,nombreDeTache);
+                croisement(&tab1,&tab2,nombreDeTache,nombreDeTache);
                 int somme1 = sommeCiFamilles(tab1,nombreDeTache);
                 int somme2 = sommeCiFamilles(tab2,nombreDeTache);
                 if(somme1 < sommeFinTache) {
