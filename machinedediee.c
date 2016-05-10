@@ -428,13 +428,30 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
     tache *tab2;
     tache *tab;
     /* Heuristique 1 : croisement
-                 2 : mutation
-                 3 : aleatoire*/
+                   2 : mutation
+                   3 : aleatoire*/
     switch(heuristique){
         int i;
     case 1:
+        srand(time(NULL));
         for(i = 0; i < nbIterations; i++){
-            //croisement(tab);
+            int rnd1 = rand()%(histo->taille-1)+1;
+            int rnd2 = rand()%(histo->taille-1)+1;
+            tab1 = getTab(histo,rnd1);
+            tab2 = getTab(histo,rnd2);
+            croisement(&tab1,&tab2,nombreDeTache,nombreDeTache);
+            int somme1 = sommeCiFamilles(tab1,nombreDeTache);
+            int somme2 = sommeCiFamilles(tab2,nombreDeTache);
+            if(somme1 < sommeFinTache) {
+                sommeFinTache = somme1;
+                memcpy(tabFinal,tab1,nombreDeTache*sizeof(tache));
+            }
+            if(somme2 < sommeFinTache){
+                sommeFinTache = somme2;
+                memcpy(tabFinal,tab2,nombreDeTache*sizeof(tache));
+            }
+            histo = ajouterTete(histo,tab1);
+            histo = ajouterTete(histo,tab2);
         }
         break;
     case 2:
@@ -458,6 +475,7 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
             int rnd2 = rand()%(histo->taille-1)+1;
             tab1 = getTab(histo,rnd1);
             tab2 = getTab(histo,rnd2);
+            //printf("iteration %i\n",rnd1);
             float r;
             r = round((float)(rand()) / (float) RAND_MAX);
             int res = (int)r;
@@ -468,13 +486,15 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
                 if(somme1 < sommeFinTache) {
                     sommeFinTache = somme1;
                     memcpy(tabFinal,tab1,nombreDeTache*sizeof(tache));
+
                 }
                 if(somme2 < sommeFinTache){
                     sommeFinTache = somme2;
                     memcpy(tabFinal,tab2,nombreDeTache*sizeof(tache));
+
                 }
-                histo = ajouterTete(histo,tab1);
-                histo = ajouterTete(histo,tab2);
+               histo = ajouterTete(histo,tab1);
+               histo = ajouterTete(histo,tab2);
             }
             else{
                 mutation(tab1,nombreDeTache);
@@ -482,6 +502,7 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
                 if(somme < sommeFinTache){
                     sommeFinTache = somme;
                      memcpy(tabFinal,tab1,nombreDeTache*sizeof(tache));
+
                 }
                 histo = ajouterTete(histo, tab1);
             }
@@ -501,7 +522,7 @@ int main(int argc, char **argv){
     int algo = 1;
     int heuristique = 3;
     int i, pi, ri, ti, famille;
-    /*printf("Saisissez le nombre de taches : >> ");
+    printf("Saisissez le nombre de taches : >> ");
     scanf("%d", &nombreDeTache);
     tache tableau[nombreDeTache];
     for(i = 0; i < nombreDeTache; i++){
@@ -526,16 +547,16 @@ int main(int argc, char **argv){
     else{
         printf("\nOn l'a pas encore codé, noob !");
         return 0;
-    }*/
+    }
 
     /* POUR TEST */
-    tache t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
+    /*tache t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
     tache t2 = { .id = 2, .pi = 3, .ri = 2, .ti = 0, .famille = 1 };
     tache t3 = { .id = 3, .pi = 2, .ri = 5, .ti = 0, .famille = 5 };
     tache t4 = { .id = 4, .pi = 5, .ri = 6, .ti = 0, .famille = 2 };
     tache t5 = { .id = 5, .pi = 8, .ri = 3, .ti = 0, .famille = 3 };
     tache t6 = { .id = 6, .pi = 1, .ri = 1, .ti = 0, .famille = 6 };
-    tache tableau[6] = {t1,t2,t3,t4,t5,t6};
+    tache tableau[6] = {t1,t2,t3,t4,t5,t6};*/
     /* FIN TEST */
 
     printf("\nSaisissez un nombre d'iteration : >> ");
