@@ -10,19 +10,20 @@
 
 /* Definition structure de tache */
 typedef struct noeud noeud;
-typedef struct listnoeud listnoeud;
+//typedef struct listnoeud listnoeud;
 
 struct noeud
 {
     int val;
-    listnoeud *enfants;
+    int nbEnfants;
+    noeud** enfants;
 };
 
-struct listnoeud
+/*struct listnoeud
 {
     noeud *node;
     listnoeud *next;
-};
+};*/
 
 
 struct tache {
