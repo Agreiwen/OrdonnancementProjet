@@ -1,4 +1,4 @@
-/* Projet Ordonancement : Machines dédiées */
+/* Projet Ordonnancement : Machines dédiées */
 
 #include <stdlib.h>
 #include <stdio.h>
