@@ -5,6 +5,8 @@
 #include <math.h>
 #include <stdbool.h>
 #include <limits.h>
+#include <string.h>
+#include <time.h>
 
 /* Definition structure de tache */
 typedef struct noeud noeud;
@@ -97,7 +99,7 @@ tache* getTab(histo histo, int a){
         i++;
     }
    printf("\ERREUR IMPOSSIBLE DE TROUVER UN TABLEAU A L'INDICE %i\n",a);
-   return EXIT_FAILURE;
+   exit(0);
 }
 
 /* Methode pour afficher la liste des taches */
@@ -407,7 +409,7 @@ void mutation(tache tab[], int size){
 void croisement(tache **tab1, tache **tab2, int tailleTab1, int tailleTab2){
     if(tailleTab1 != tailleTab2){
         printf("Les deux tableaux doivent etre de meme taille !\n");
-        return EXIT_FAILURE;
+        exit(0);
     }
     else{
         int coupure = 3*tailleTab1/4;
@@ -510,7 +512,6 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
         break;
     }
     afficherTabTache(tabFinal,nombreDeTache);
-    int s = sommeCiFamilles(tabFinal,nombreDeTache);
 }
 
 int algoBranchAndBound(int heuristique, llist taches){
@@ -521,7 +522,7 @@ int main(int argc, char **argv){
     printf("****** Projet d'ordonnancement ******\n\n");
     int algo = 1;
     int heuristique = 3;
-    int i, pi, ri, ti, famille;
+    int i, pi, ri, famille;
     printf("Saisissez le nombre de taches : >> ");
     scanf("%d", &nombreDeTache);
     tache tableau[nombreDeTache];
