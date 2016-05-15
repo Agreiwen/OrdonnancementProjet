@@ -8,28 +8,73 @@
 #include <string.h>
 #include <time.h>
 
+struct tache {
+  int id;
+  int pi;
+  int ri;
+  int ti;
+  int famille;
+};
+typedef struct tache tache;
+
 struct noeud
 {
     tache id;
     int BI;
-    tache[] chemin;
+    tache** chemin;
+    struct noeud *next;
 };
+typedef struct noeud noeud;
 typedef noeud* listenoeud;
+typedef struct element element;
+struct element
+{
+  tache t;
+  struct element *next;
+};
 
-listenoeud ListArbre;
-//Listetache ListChemin;
-listetaches listeTaches;
-//Listetache Tachesrestantes;
-Listenoeud Resultat;
-noeud n0;
-n0.id = null;
-no.BI = BI;
-no.chemin = null;
+typedef element* llist;
+listenoeud ajouterTeteNoeud(listenoeud liste, noeud *tache1){
+ // noeud* nouvelElement = malloc(sizeof(noeud));
+  tache1->next = liste;
+ // nouvelElement->next = liste;
+  return tache1;
+}
 
-ListArbre.ajouter(t0);
-Tachesrestantes.ajouter(Taches);
-while ListArbre != NULL
-   if(ListArbre.tete.chemin.length != listeTaches.length){
+
+llist ajouterEnTete(llist liste, tache tache1){
+  element* nouvelElement = malloc(sizeof(element));
+  nouvelElement->t = tache1;
+  nouvelElement->next = liste;
+  return nouvelElement;
+}
+void branchAndBound(int BI, int BS, llist listeTaches){
+
+    listenoeud ListArbre;
+    //Listetache ListChemin;
+    //llist listeTaches;
+    //Listetache Tachesrestantes;
+    listenoeud Resultat;
+    llist TachesRestantes;
+    noeud* n0 = malloc(sizeof(noeud));
+    tache t0;
+    n0->id = t0;
+    n0->BI = BI;
+    n0->chemin = NULL;
+
+    ListArbre = ajouterTeteNoeud(ListArbre, n0);
+
+    element *tmp = listeTaches;
+    while(tmp != NULL){
+
+        TachesRestantes = ajouterEnTete(TachesRestantes, tmp->t);
+        tmp = tmp->next;
+    }
+
+
+
+while (ListArbre != NULL)
+   if(ListArbre->chemin.length != listeTaches.length){
 
         noeud tmp = ListArbre.tete;
          if(tacheREstantes = null){
@@ -70,7 +115,7 @@ while ListArbre != NULL
 }
 
 /* Definition structure de tache */
-typedef struct noeud noeud;
+/*typedef struct noeud noeud;
 typedef struct listnoeud listnoeud;
 
 struct noeud
@@ -83,9 +128,11 @@ struct listnoeud
 {
     noeud *node;
     listnoeud *next;
-};
+};*/
 
 int main(int argc, char **argv){
     printf("****** Projet d'ordonnancement ******\n\n");
+    int BI;
+    int BS;
     return 0;
 }
