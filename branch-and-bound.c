@@ -56,12 +56,28 @@ llist ajouterEnTete(llist liste, tache tache1){
   nouvelElement->next = liste;
   return nouvelElement;
 }
+
+llist ajouterQueue(llist liste, tache tache1){
+    element* nouvelElement = malloc(sizeof(element));
+    element *tmp = liste;
+    if(tmp == NULL){
+        nouvelElement->taille = 1;
+        nouvelElement->t = tache1;
+        nouvelElement->next = liste;
+
+    }else{
+        while(tmp != NULL){
+            tmp = tmp->next;
+        }
+        nouvelElement->taille = (tmp->taille)+1;
+        nouvelElement->t = tache1;
+
+    }
+}
 void branchAndBound(int BI, int BS, llist listeTaches){
 
     listenoeud ListArbre;
-    //Listetache ListChemin;
-    //llist listeTaches;
-    //Listetache Tachesrestantes;
+
     listenoeud Resultat;
     llist TachesRestantes;
     noeud* n0 = malloc(sizeof(noeud));
@@ -85,14 +101,16 @@ while (ListArbre != NULL)
    if(ListArbre->chemin->taille != listeTaches->taille){
 
         noeud* tmp = ListArbre;
-         if(TachesRestantes = null){
+       /*  if(TachesRestantes = NULL){
             tachesrestantes = lsitetaches - tmp.chemin;
-        }
-        ListArbre.supprimertete();
-        for chaque t dans taches restantes {
-            nt.id = t;
-            nt.BI = BI;
-            nt.chemin[] = tmp.chemin + nt.id
+        }*/
+        ListArbre = ListArbre->next;
+        element *temp = TachesRestantes;
+        while(temp != NULL){
+            noeud* nt;
+            nt->id = temp->id;
+            nt->BI = BI;
+            nt->chemin = tmp.chemin + nt.id
             Listenoeud ListeArbretmp.ajoutertete(nt);
 
 
@@ -102,8 +120,7 @@ while (ListArbre != NULL)
 
         }
         Tachesrestantes.supprimer(ListArbre.tete.id);
-  // ListChemin.ajouter(ListArbre.tete);
-  // Tachesrestantes.enlever(ListArbre.tete);
+
    }else{
 
     res = sommeCiFamilles(ListArbre.tete);
@@ -111,13 +128,9 @@ while (ListArbre != NULL)
         BS = res;
         Resultat = ListArbre.tete.chemin;
     }
-   // ListChemin = suppr2dernierelement(ListChemin);
 
     ListArbre.supprtete();
-   //  Tachesrestantes.ajouterqueue(Taches que je viens de suppr);
-  //  ListChemin.ajouter(ListArbre.tete);
-  //  ListChemin.ajouter(ListArbre.tete);
- //  Tachesrestantes.enlever(ListArbre.tete);
+
    }
 
 }
