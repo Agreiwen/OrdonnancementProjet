@@ -16,24 +16,26 @@ struct tache {
   int famille;
 };
 typedef struct tache tache;
-
-struct noeud
-{
-    tache id;
-    int BI;
-    tache** chemin;
-    struct noeud *next;
-};
-typedef struct noeud noeud;
-typedef noeud* listenoeud;
 typedef struct element element;
 struct element
 {
   tache t;
+  int taille;
   struct element *next;
 };
 
 typedef element* llist;
+struct noeud
+{
+    tache id;
+    int BI;
+    llist chemin;
+    struct noeud *next;
+};
+typedef struct noeud noeud;
+typedef noeud* listenoeud;
+
+
 listenoeud ajouterTeteNoeud(listenoeud liste, noeud *tache1){
  // noeud* nouvelElement = malloc(sizeof(noeud));
   tache1->next = liste;
@@ -44,6 +46,12 @@ listenoeud ajouterTeteNoeud(listenoeud liste, noeud *tache1){
 
 llist ajouterEnTete(llist liste, tache tache1){
   element* nouvelElement = malloc(sizeof(element));
+  element *tmp = liste;
+  if(tmp==NULL){
+        nouvelElement->taille = 1;
+  }else{
+      nouvelElement->taille = (tmp->taille)+1;
+  }
   nouvelElement->t = tache1;
   nouvelElement->next = liste;
   return nouvelElement;
@@ -74,10 +82,10 @@ void branchAndBound(int BI, int BS, llist listeTaches){
 
 
 while (ListArbre != NULL)
-   if(ListArbre->chemin.length != listeTaches.length){
+   if(ListArbre->chemin->taille != listeTaches->taille){
 
-        noeud tmp = ListArbre.tete;
-         if(tacheREstantes = null){
+        noeud* tmp = ListArbre;
+         if(TachesRestantes = null){
             tachesrestantes = lsitetaches - tmp.chemin;
         }
         ListArbre.supprimertete();
