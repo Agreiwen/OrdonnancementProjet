@@ -57,7 +57,7 @@ llist ajouterEnTete(llist liste, tache tache1){
   return nouvelElement;
 }
 
-llist ajouterQueue(llist liste, tache tache1){
+llist ajouterQueue(llist *liste, tache tache1){
     element* nouvelElement = malloc(sizeof(element));
     element *tmp = liste;
     if(tmp == NULL){
@@ -71,6 +71,7 @@ llist ajouterQueue(llist liste, tache tache1){
         }
         nouvelElement->taille = (tmp->taille)+1;
         nouvelElement->t = tache1;
+        tmp = nouvelElement;
 
     }
 }
@@ -108,7 +109,7 @@ while (ListArbre != NULL)
         element *temp = TachesRestantes;
         while(temp != NULL){
             noeud* nt;
-            nt->id = temp->id;
+            nt->id = temp->t;
             nt->BI = BI;
             nt->chemin = tmp.chemin + nt.id
             Listenoeud ListeArbretmp.ajoutertete(nt);
