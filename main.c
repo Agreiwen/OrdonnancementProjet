@@ -1,4 +1,4 @@
-/* Projet Ordonnancement : Machines dÃ©diÃ©es - branch and bound */
+/* Projet Ordonnancement : Machines dédiées - branch and bound */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -213,6 +213,20 @@ int sommeCiFamilles(tache tab[], int size){
 	}
 	return somme;
 }
+
+
+int max2(int a, int b){
+    if(a <= b){
+        return b;
+    }
+    else{
+        return a;
+    }
+}
+
+int max3(int a, int b, int c){
+    return max2(max2(a,b),c);
+}
 llist soustractionListes(llist taches, llist chemin){
     elementbnb* res = taches;
 
@@ -322,8 +336,27 @@ void branchAndBound(int BI, int BS, llist listeTaches){
    }
 
     }
-    afficherListeTaches(Resultat);
+    afficherListeTachesNoeud(Resultat);
 
+}
+
+int sommeCi(tache tab[], int size){
+	int i=0;
+	tab[0].ti = tab[0].ri;
+	for(i=1; i<size; i++){
+		int finPrecedent =  tab[i-1].ti + tab[i-1].pi;
+		if(tab[i].ri <= finPrecedent){
+			tab[i].ti = finPrecedent;
+		}else{
+			tab[i].ti = tab[i].ri;
+		}
+	}
+	int somme = 0;
+	int j=0;
+	for(j=0;j<size;j++){
+		somme += tab[j].ti + tab[j].pi;
+	}
+	return somme;
 }
 
 /* Definition structure de tache */
@@ -341,7 +374,21 @@ struct listnoeud
     noeud *node;
     listnoeud *next;
 };*/
-void afficherListeTaches(listenoeud nodes){
+
+void afficherListeTaches(llist taches){
+  elementbnb *tmp = taches;
+  printf("Liste des taches :\n");
+  while(tmp != NULL){
+    printf("id : %i",tmp->t.id);
+    printf("| pi : %i",tmp->t.pi);
+    printf("| ri : %i",tmp->t.ri);
+    printf("| ti : %i",tmp->t.ti);
+    printf("| famille : %i\n",tmp->t.famille);
+    tmp = tmp->next;
+  }
+}
+
+void afficherListeTachesNoeud(listenoeud nodes){
   //element *tmp2 = malloc(sizeof(element));
   printf("Liste des taches :\n");
   noeud *tmp = nodes;
@@ -366,7 +413,22 @@ int main(int argc, char **argv){
     tache tableau[6] = {t1,t2,t3,t4,t5,t6};
     /* FIN TEST */
     int BI = 0;
-    int BS = sommeCi(tableau);
-    branchAndBound(BI, BS, tableau);
+    int BS = sommeCi(tableau,6);
+    llist listesol = NULL;
+    int i;
+  //  for(i = 5; i>=0; i--){
+        listesol = ajouterEnTete(listesol, tableau[5]);
+        listesol = ajouterEnTete(listesol, tableau[4]);
+        listesol = ajouterEnTete(listesol, tableau[3]);
+        listesol = ajouterEnTete(listesol, tableau[2]);
+        listesol = ajouterEnTete(listesol, tableau[1]);
+        listesol = ajouterEnTete(listesol, tableau[0]);
+  //  }
+     printf("Tab1 \n");
+    afficherListeTaches(listesol);
+    listesol = ajouterQueue(listesol, t2);
+    printf("\nTab2\n");
+    afficherListeTaches(listesol);
+  //  branchAndBound(BI, BS, listesol);
     return 0;
 }
