@@ -37,10 +37,15 @@ typedef noeud* listenoeud;
 
 
 listenoeud ajouterTeteNoeud(listenoeud liste, noeud *tache1){
- // noeud* nouvelElement = malloc(sizeof(noeud));
-  tache1->next = liste;
+  noeud* nouvelElement = malloc(sizeof(noeud));
+  nouvelElement->BI = tache1->BI;
+  nouvelElement->id = tache1->id;
+  nouvelElement->chemin = tache1->chemin;
+  nouvelElement->next = liste;
+
+
  // nouvelElement->next = liste;
-  return tache1;
+  return nouvelElement;
 }
 
 
@@ -59,23 +64,42 @@ llist ajouterEnTete(llist liste, tache tache1){
 
 llist ajouterQueue(llist liste, tache tache1){
     elementbnb* nouvelElement = malloc(sizeof(elementbnb));
-    elementbnb *tmp = liste;
-    if(liste == NULL){
-        nouvelElement->taille = 1;
-        nouvelElement->t = tache1;
-        nouvelElement->next = liste;
+    elementbnb* debut = liste;
 
-    }else{
-        while(liste != NULL){
-            liste->taille = (liste->taille)+1;
-            liste = liste->next;
+    if(nouvelElement != NULL){
+        nouvelElement->t = tache1;
+        //nouvelElement->next = NULL;
+        if(liste == NULL){
+            //printf("Liste est nul");
+            nouvelElement->taille = 1;
+            nouvelElement->next = NULL;
+            liste = nouvelElement;
+
+
+
+        }else{
+            elementbnb *tmp = liste;
+          //  int i = tmp->taille;
+         //   int i = 0;
+            if(tmp->next == NULL){
+         //       ;
+                tmp->taille = (tmp->taille)+1;
+            }
+            while(tmp->next != NULL){
+                tmp->taille = (tmp->taille)+1;
+              //  i = (tmp->taille)-1;
+                // printf(" mon i %d : ",i);
+
+                tmp = tmp->next;
+            }
+
+            nouvelElement->taille = 1;
+            nouvelElement->next = NULL;
+            tmp->next = nouvelElement;
+
         }
-        nouvelElement->taille = (tmp->taille)+1;
-        nouvelElement->t = tache1;
-        liste = nouvelElement;
-
     }
-    return tmp;
+    return debut;
 }
 
 llist supprimerElement(llist liste, tache tache1){
@@ -248,95 +272,185 @@ llist soustractionListes(llist taches, llist chemin){
 }
 
 
-void branchAndBound(int BI, int BS, llist listeTaches){
+void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
 
     listenoeud ListArbre;
 
-    listenoeud Resultat;
-    llist TachesRestantes;
+    listenoeud Resultat = NULL;
+    llist tachesRestantes = NULL;
     noeud* n0 = malloc(sizeof(noeud));
-    tache t0;
+    tache t0 = { .id = -1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
     n0->id = t0;
     n0->BI = BI;
-    n0->chemin = NULL;
+    elementbnb* ntmp = malloc(sizeof(elementbnb));
+    ntmp->taille = 1;
+    ntmp->t = t0;
+  //  ntmp->chemin->taille = 0;
+    n0->chemin = ntmp;
+    n0->next = NULL;
 
     ListArbre = ajouterTeteNoeud(ListArbre, n0);
+  //  printf("Liste de noeuds dans l'arbres \n");
+  //  afficherListeNoeud(ListArbre);
+
+    elementbnb* tachesRestantes2 = NULL;
+
 
     elementbnb *tmp = listeTaches;
     while(tmp != NULL){
-
-        TachesRestantes = ajouterEnTete(TachesRestantes, tmp->t);
+        //printf("yo");
+        tachesRestantes2 = ajouterEnTete(tachesRestantes2, tmp->t);
         tmp = tmp->next;
+      //  printf("yo");
     }
 
+    elementbnb *tmp2 = tachesRestantes2;
+     while(tmp2 != NULL){
+        //printf("yo");
+        tachesRestantes = ajouterEnTete(tachesRestantes, tmp2->t);
+        tmp2 = tmp2->next;
+      //  printf("yo");
+    }
 
+   // printf("\nTaches Restantes \n");
+  //  afficherListeTaches(tachesRestantes);
 
+    int cmpt = 0;
     while (ListArbre != NULL){
-        if(ListArbre->chemin->taille != listeTaches->taille){
+            cmpt++;
+        //printf("Je rentre %d\n",ListArbre->chemin->taille);
+
+    /*    elementbnb* elemt = ListArbre->chemin;
+        int i = 0;
+        while (elemt != NULL){
+            i++;
+            elemt = elemt->next;
+        }*/
+    //    printf("%d",i);
+       // afficherListeNoeud(ListArbre);
+        afficherListeTaches(ListArbre->chemin);
+        if(ListArbre->chemin->taille != (listeTaches->taille)+1){
 
             noeud* tmp = ListArbre;
-            if(TachesRestantes = NULL){
-               TachesRestantes = soustractionListes(listeTaches, tmp->chemin);
+
+            if(tachesRestantes == NULL){
+
+               tachesRestantes = soustractionListes(listeTaches, tmp->chemin);
             }
+            elementbnb *temp = tachesRestantes;
+
             ListArbre = ListArbre->next;
-            elementbnb *temp = TachesRestantes;
-            listenoeud ListeArbretmp;
+
+            listenoeud ListeArbretmp = NULL;
+           // printf("taille de temp %d",temp->taille);
             while(temp != NULL){
-                noeud* nt;
+               //  printf("Je rentre");
+
+                noeud* nt = malloc(sizeof(noeud));
+             //   printf("\n%d tache du noeud : ",temp->t.id);
                 nt->id = temp->t;
                 nt->BI = BI;
-                nt->chemin = ajouterQueue(tmp->chemin,nt->id);
+                elementbnb* tmp2 = malloc(sizeof(elementbnb));
+
+                memcpy(tmp2,tmp->chemin,sizeof(elementbnb));
+              //   afficherListeTaches(tmp->chemin);
+                nt->chemin = ajouterQueue(tmp2,nt->id);
+              //   afficherListeTaches(nt->chemin);
+
+              //  printf("je suis lahhhhhhhhhhhhhhhhhhhhhhh\n");
+
+               // afficherListeTaches(nt->chemin);
 
                 ListeArbretmp = ajouterTeteNoeud(ListeArbretmp, nt);
-                temp = temp->next;
-            }
-            noeud* tmpn = ListeArbretmp;
-            while(tmpn != NULL){
+              //  printf("\n Taille du chemin : %d",nt->chemin->taille);
 
+
+                //break;
+                temp = temp->next;
+
+                //printf("je suis la");
+            }
+           //  break;
+
+            noeud* tmpn = malloc(sizeof(noeud));
+            tmpn = ListeArbretmp;
+            while(tmpn != NULL){
+               //printf("je suis la");
+
+               // tmp3 = ListArbre;
+
+                //printf("%i\n",tmp3->id.id);
                 ListArbre = ajouterTeteNoeud(ListArbre, tmpn);
+
                 tmpn = tmpn->next;
 
             }
+        //    printf(" taille du chemin %d \n: ",ListArbre->chemin->taille);
 
-        TachesRestantes = supprimerElement(TachesRestantes, ListArbre->id);
+            //printf("je suis lahhhhhhhhhhhhhhhhhhhhhhh\n");
+           // afficherListeTaches(ListArbre->chemin);
+            if(cmpt==3)break;
+            tachesRestantes = supprimerElement(tachesRestantes, ListArbre->id);
+           // afficherListeTaches(tachesRestantes);
 
-   }else{
+        }else{
+           //  printf("je suis laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+           //break;
+// break;
+      //      afficherListeTaches(ListArbre->chemin);
 
-    noeud *noeudtmp = ListArbre;
-    int j = 0;
-    while(noeudtmp != NULL){
-        j++;
-        noeudtmp = noeudtmp->next;
+            elementbnb* tachetmp = ListArbre->chemin;
+            int j = 0;
+            while(tachetmp != NULL){
+                j++;
+                tachetmp = tachetmp->next;
 
-    }
-    tache tableau[j];
-    int i = 0;
-    noeud *noeudtmp2 = ListArbre;
-    while(noeudtmp2 != NULL){
-        tableau[i] = noeudtmp2->id;
-        noeudtmp2 = noeudtmp2->next;
-    }
-    int res = sommeCiFamilles(tableau, j);
+            }
+        //    printf(" Mon j : %d",j);
+            j--;
+            tache tableau[j];
+            int i = 0;
+            elementbnb *tachetmp2 = ListArbre->chemin;
+            tachetmp2 = tachetmp2->next;
+            while(tachetmp2 != NULL){
+                tableau[i] = tachetmp2->t;
+                tachetmp2 = tachetmp2->next;
+                i++;
+            }
+        //    printf("Tab fini %d ",i);
+            //afficherTabTache(tableau,j);
+          //  break;
+            int res = sommeCiFamilles(tableau, j);
+          //  afficherTabTache(tableau,j);
+            printf(" Mon res %i",res);
+            //break;
+            if(res < BS){
+                //    printf("Toyo");
 
-    if(res < BS){
-        BS = res;
-        elementbnb* tmpel = ListArbre->chemin;
-        while(tmpel != NULL){
-            noeud *ntmp;
-            ntmp->id = tmpel->t;
-            ntmp->BI = BI;
-            ntmp->chemin = NULL;
-            Resultat = ajouterTeteNoeud(Resultat, ntmp);
-            tmpel = tmpel->next;
+                BS = res;
+                //printf("%d",res);
+                elementbnb* tmpel = ListArbre->chemin;
+                tmpel = tmpel->next;
+
+                while(tmpel != NULL){
+                    noeud *ntmp = malloc(sizeof(noeud));
+                    ntmp->id = tmpel->t;
+                    ntmp->BI = BI;
+                    ntmp->chemin = NULL;
+                    Resultat = ajouterTeteNoeud(Resultat, ntmp);
+                    tmpel = tmpel->next;
+                }
+
+            }
+
+            ListArbre = ListArbre->next;
+
         }
+      //  afficherListeTachesNoeud(Resultat);
+
+    //ListArbre = ListArbre->next;
     }
-
-    ListArbre = ListArbre->next;
-
-   }
-
-    }
-    afficherListeTachesNoeud(Resultat);
+    //afficherListeTachesNoeud(Resultat);
 
 }
 
@@ -374,7 +488,18 @@ struct listnoeud
     noeud *node;
     listnoeud *next;
 };*/
-
+void afficherTabTache(tache tableau[], int nombretache){
+    int i;
+    printf("\n");
+    for(i = 0; i < nombretache; i++){
+        tache t = tableau[i];
+        printf("id : %i",t.id);
+        printf("| pi : %i",t.pi);
+        printf("| ri : %i",t.ri);
+        printf("| ti : %i",t.ti);
+        printf("| famille : %i\n",t.famille);
+    }
+}
 void afficherListeTaches(llist taches){
   elementbnb *tmp = taches;
   printf("Liste des taches :\n");
@@ -383,8 +508,10 @@ void afficherListeTaches(llist taches){
     printf("| pi : %i",tmp->t.pi);
     printf("| ri : %i",tmp->t.ri);
     printf("| ti : %i",tmp->t.ti);
-    printf("| famille : %i\n",tmp->t.famille);
+    printf("| famille : %i",tmp->t.famille);
+     printf("| TAILLE %i\n",tmp->taille);
     tmp = tmp->next;
+
   }
 }
 
@@ -401,6 +528,19 @@ void afficherListeTachesNoeud(listenoeud nodes){
     tmp = tmp->next;
   }
 }
+void afficherListeNoeud(listenoeud nodes){
+  //element *tmp2 = malloc(sizeof(element));
+  printf("Liste des taches :\n");
+  noeud *tmp = nodes;
+  while(tmp != NULL){
+    printf("id tache : %i",tmp->id.id);
+    printf("| BI : %i\n",tmp->BI);
+    //printf("| chemin : %i",tmp->chemin);
+    //printf("| noeud : %i",tmp->next->id);
+
+    tmp = tmp->next;
+  }
+}
 int main(int argc, char **argv){
     printf("****** Projet d'ordonnancement ******\n\n");
 /* POUR TEST */
@@ -410,25 +550,45 @@ int main(int argc, char **argv){
     tache t4 = { .id = 4, .pi = 5, .ri = 6, .ti = 0, .famille = 2 };
     tache t5 = { .id = 5, .pi = 8, .ri = 3, .ti = 0, .famille = 3 };
     tache t6 = { .id = 6, .pi = 1, .ri = 1, .ti = 0, .famille = 6 };
-    tache tableau[6] = {t1,t2,t3,t4,t5,t6};
+    tache tableau[3] = {t1,t2,t3};
     /* FIN TEST */
     int BI = 0;
-    int BS = sommeCi(tableau,6);
+    int BS = sommeCi(tableau,3);
     llist listesol = NULL;
     int i;
   //  for(i = 5; i>=0; i--){
-        listesol = ajouterEnTete(listesol, tableau[5]);
-        listesol = ajouterEnTete(listesol, tableau[4]);
-        listesol = ajouterEnTete(listesol, tableau[3]);
+       // listesol = ajouterEnTete(listesol, tableau[5]);
+       // listesol = ajouterEnTete(listesol, tableau[4]);
+      //  listesol = ajouterEnTete(listesol, tableau[3]);
         listesol = ajouterEnTete(listesol, tableau[2]);
         listesol = ajouterEnTete(listesol, tableau[1]);
         listesol = ajouterEnTete(listesol, tableau[0]);
   //  }
      printf("Tab1 \n");
     afficherListeTaches(listesol);
-    listesol = ajouterQueue(listesol, t2);
-    printf("\nTab2\n");
-    afficherListeTaches(listesol);
-  //  branchAndBound(BI, BS, listesol);
+    //listesol = ajouterQueue(listesol, t2);
+   // printf("\nTab2\n");
+    //afficherListeTaches(listesol);
+     /* noeud* n0 = malloc(sizeof(noeud));
+      tache t0 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
+      n0->id = t0;
+      n0->BI = BI;
+      elementbnb* ntmp = malloc(sizeof(elementbnb));
+      ntmp->taille = 0;
+      ntmp->t = t0;
+      n0->chemin = ntmp;
+      n0->next = NULL;
+
+
+      listenoeud l1 = NULL;
+      l1 = ajouterTeteNoeud(l1,n0);
+      l1 = ajouterTeteNoeud(l1,n0);
+      l1 = ajouterTeteNoeud(l1,n0);l1 = ajouterTeteNoeud(l1,n0);
+      printf("TEST TETE\n");
+      afficherListeNoeud(l1);*/
+
+      //afficherListeTaches(nt->chemin);
+
+    branchAndBound(BI, BS, listesol, 3);
     return 0;
 }
