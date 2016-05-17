@@ -62,6 +62,14 @@ llist ajouterEnTete(llist liste, tache tache1){
   return nouvelElement;
 }
 
+llist copie(llist liste){
+    elementbnb* nouvelliste = malloc(sizeof(elementbnb));
+    elementbnb* oldliste = liste;
+    while(oldliste != NULL){
+
+
+    }
+}
 llist ajouterQueue(llist liste, tache tache1){
     elementbnb* nouvelElement = malloc(sizeof(elementbnb));
     elementbnb* debut = liste;
@@ -82,6 +90,7 @@ llist ajouterQueue(llist liste, tache tache1){
           //  int i = tmp->taille;
          //   int i = 0;
             if(tmp->next == NULL){
+                 //   printf("Je rentre la");
          //       ;
                 tmp->taille = (tmp->taille)+1;
             }
@@ -313,12 +322,12 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
     }
 
    // printf("\nTaches Restantes \n");
-  //  afficherListeTaches(tachesRestantes);
+    afficherListeTaches(tachesRestantes);
 
     int cmpt = 0;
     while (ListArbre != NULL){
             cmpt++;
-        //printf("Je rentre %d\n",ListArbre->chemin->taille);
+        printf("\n<<<<<<<<<<<<<<<<<<Je rentre dans mon grand While<<<<<<<<<<<<<<<<<<<<<<<<< \n");
 
     /*    elementbnb* elemt = ListArbre->chemin;
         int i = 0;
@@ -327,75 +336,105 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
             elemt = elemt->next;
         }*/
     //    printf("%d",i);
-       // afficherListeNoeud(ListArbre);
-        afficherListeTaches(ListArbre->chemin);
+      //  afficherListeNoeud(ListArbre);
+     //   afficherListeTaches(ListArbre->chemin);
+        printf("\nJe test si %d est different de %d \n",ListArbre->chemin->taille,(listeTaches->taille)+1);
         if(ListArbre->chemin->taille != (listeTaches->taille)+1){
-
+            printf("Oui c'est different\n");
             noeud* tmp = ListArbre;
+            printf("je definis un pointeur sur ma Listarbre tmp\n");
+            printf("Contenu de tmp : \n");
+            afficherListeNoeud(ListArbre);
 
             if(tachesRestantes == NULL){
 
                tachesRestantes = soustractionListes(listeTaches, tmp->chemin);
             }
+            printf("\n je definis un pointeur sur mes tachesRestantes :\n");
+
             elementbnb *temp = tachesRestantes;
+            afficherListeTaches(temp);
 
+            printf("Je dis a ListAbre d'avance\n");
             ListArbre = ListArbre->next;
+            afficherListeNoeud(ListArbre);
 
+            printf("Je creer une listeArbretmp\n");
             listenoeud ListeArbretmp = NULL;
            // printf("taille de temp %d",temp->taille);
+            printf("--------Je parcours mes taches dans temp : ---------\n\n");
             while(temp != NULL){
-               //  printf("Je rentre");
+                printf("Tache courante %d \n",temp->t.id);
+
+                printf("J'affiche le chemin contenu dans tmp : tmp->chemin \n");
+               afficherListeTaches(tmp->chemin);
 
                 noeud* nt = malloc(sizeof(noeud));
              //   printf("\n%d tache du noeud : ",temp->t.id);
                 nt->id = temp->t;
                 nt->BI = BI;
                 elementbnb* tmp2 = malloc(sizeof(elementbnb));
-
-                memcpy(tmp2,tmp->chemin,sizeof(elementbnb));
-              //   afficherListeTaches(tmp->chemin);
+                printf(" Adresse de tmp2 %a\n",&tmp2);
+                tmp2 = copie(tmp->chemin);
+             //   memmove(tmp2,tmp->chemin,(tmp->chemin->taille)*sizeof(elementbnb));
+               // tmp->chemin = NULL;
+                printf(" Adresse de tmp2 %a\n",&tmp2);
+                printf("Je creer un noeud qui a pour chemin tmp->chemin + la tache %d\n",nt->id.id);
                 nt->chemin = ajouterQueue(tmp2,nt->id);
-              //   afficherListeTaches(nt->chemin);
 
-              //  printf("je suis lahhhhhhhhhhhhhhhhhhhhhhh\n");
+                printf("Voici donc le chemin dans le noeud\n : ");
+                afficherListeTaches(nt->chemin);
 
-               // afficherListeTaches(nt->chemin);
-
+                printf("J'ajoute ce noeud dans ListeArbretmp\n");
                 ListeArbretmp = ajouterTeteNoeud(ListeArbretmp, nt);
-              //  printf("\n Taille du chemin : %d",nt->chemin->taille);
 
-
-                //break;
+                printf("Je passe a la tache suivante\n");
                 temp = temp->next;
 
-                //printf("je suis la");
             }
-           //  break;
+           // break;
 
+            printf("\n-------Fin du parcours des taches---------\n");
             noeud* tmpn = malloc(sizeof(noeud));
             tmpn = ListeArbretmp;
+            printf("Je remplit maintenant ListArbre avec les noeuds de ListeArbretmp\n");
+            printf("Le contenu actuel de ma ListArbre est : \n");
+            afficherListeNoeud(ListArbre);
             while(tmpn != NULL){
-               //printf("je suis la");
+               printf("Noeud courant : %d\n",tmpn->id.id);
+
 
                // tmp3 = ListArbre;
 
                 //printf("%i\n",tmp3->id.id);
+               // printf("\nJe remplit ListArbre\n");
+              //  afficherListeTaches(tmpn->chemin);
                 ListArbre = ajouterTeteNoeud(ListArbre, tmpn);
-
+                printf("Contenu de ma ListArbre après ajout \n");
+                afficherListeNoeud(ListArbre);
+              //  printf("\nJ'ai ca dedans ListArbre\n");
+              //  afficherListeTaches(ListArbre->chemin);
                 tmpn = tmpn->next;
+                printf("Je passe au noeud suivant \n");
 
             }
+            printf("Fin du remplissage de ListAbre\n");
+            printf("Contenu de ListArbre\n");
+            afficherListeNoeud(ListArbre);
         //    printf(" taille du chemin %d \n: ",ListArbre->chemin->taille);
 
             //printf("je suis lahhhhhhhhhhhhhhhhhhhhhhh\n");
            // afficherListeTaches(ListArbre->chemin);
-            if(cmpt==3)break;
+           printf("\nFin du grand While\n");
+            if(cmpt==2)break;
+            printf("Je retire le premier element de Taches restantes\n");
+
             tachesRestantes = supprimerElement(tachesRestantes, ListArbre->id);
-           // afficherListeTaches(tachesRestantes);
+            afficherListeTaches(tachesRestantes);
 
         }else{
            //  printf("je suis laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-           //break;
+           break;
 // break;
       //      afficherListeTaches(ListArbre->chemin);
 
