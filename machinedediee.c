@@ -8,22 +8,9 @@
 #include <string.h>
 #include <time.h>
 
+#include "Branchandbound.c"
 /* Definition structure de tache */
-typedef struct noeud noeud;
-//typedef struct listnoeud listnoeud;
 
-struct noeud
-{
-    int val;
-    int nbEnfants;
-    noeud** enfants;
-};
-
-/*struct listnoeud
-{
-    noeud *node;
-    listnoeud *next;
-};*/
 
 
 struct tache {
@@ -545,11 +532,10 @@ int main(int argc, char **argv){
     if(algo == 1){
         printf("\nChoisissez une heuristique\n1. Que des croisements\n2. Que des mutations\n3. Aleatoire\n>> ");
         scanf("%i",&heuristique);
+        printf("\nSaisissez un nombre d'iteration : >> ");
+        scanf("%i",&nbIterations);
     }
-    else{
-        printf("\nOn l'a pas encore codé, noob !");
-        return 0;
-    }
+
 
     /* POUR TEST */
     /*tache t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
@@ -561,8 +547,8 @@ int main(int argc, char **argv){
     tache tableau[6] = {t1,t2,t3,t4,t5,t6};*/
     /* FIN TEST */
 
-    printf("\nSaisissez un nombre d'iteration : >> ");
-    scanf("%i",&nbIterations);
+
+
 
     afficherTabTache(tableau,nombreDeTache);
     tache *tab1 = malloc(nombreDeTache*sizeof(tache));
@@ -574,16 +560,18 @@ int main(int argc, char **argv){
     histo listeSol = NULL;
     listeSol = ajouterTete(listeSol, tab1);
     listeSol = ajouterTete(listeSol, tab2);
-
+  //  char *arguments[] = {NULL, NULL };
+ // int a;
     switch(algo){
     case 1:
         algoGenetique(heuristique, listeSol, nbIterations);
         break;
     case 2:
-        //algoBranchAndBound(heuristique, taches);
+        algobnb();
         break;
     default:
         printf("l'algo n'exsite pas\n");
+
         break;
     }
     printf("RESULTAT de l'algorithme : %i\n",sommeFinTache);

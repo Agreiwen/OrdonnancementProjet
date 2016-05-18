@@ -7,37 +7,37 @@
 #include <limits.h>
 #include <string.h>
 #include <time.h>
-
-struct tache {
+#include "Branchandbound.h"
+struct tachebnb {
   int id;
   int pi;
   int ri;
   int ti;
   int famille;
 };
-typedef struct tache tache;
+typedef struct tachebnb tachebnb;
 typedef struct elementbnb elementbnb;
 struct elementbnb
 {
-  tache t;
+  tachebnb t;
   int taille;
   struct elementbnb *next;
 };
 
-typedef elementbnb* llist;
-struct noeud
+typedef elementbnb* llistbnb;
+struct noeudbnb
 {
-    tache id;
+    tachebnb id;
     int BI;
-    llist chemin;
-    struct noeud *next;
+    llistbnb chemin;
+    struct noeudbnb *next;
 };
-typedef struct noeud noeud;
-typedef noeud* listenoeud;
+typedef struct noeudbnb noeudbnb;
+typedef noeudbnb* listenoeud;
 
 
-listenoeud ajouterTeteNoeud(listenoeud liste, noeud *tache1){
-  noeud* nouvelElement = malloc(sizeof(noeud));
+listenoeud ajouterTeteNoeud(listenoeud liste, noeudbnb *tache1){
+  noeudbnb* nouvelElement = malloc(sizeof(noeudbnb));
   nouvelElement->BI = tache1->BI;
   nouvelElement->id = tache1->id;
   nouvelElement->chemin = tache1->chemin;
@@ -49,7 +49,7 @@ listenoeud ajouterTeteNoeud(listenoeud liste, noeud *tache1){
 }
 
 
-llist ajouterEnTete(llist liste, tache tache1){
+llistbnb ajouterEnTetebnb(llistbnb liste, tachebnb tache1){
   elementbnb* nouvelElement = malloc(sizeof(elementbnb));
   elementbnb* tmp = liste;
   if(tmp==NULL){
@@ -63,7 +63,7 @@ llist ajouterEnTete(llist liste, tache tache1){
 }
 
 
-llist copie(llist liste){
+llistbnb copie(llistbnb liste){
 
     elementbnb* listed = liste;
     elementbnb* nouvelliste = NULL;
@@ -89,7 +89,7 @@ llist copie(llist liste){
 }
 
 
-llist ajouterQueue(llist liste, tache tache1){
+llistbnb ajouterQueue(llistbnb liste, tachebnb tache1){
     elementbnb* nouvelElement = malloc(sizeof(elementbnb));
     elementbnb* debut = liste;
 
@@ -130,7 +130,7 @@ llist ajouterQueue(llist liste, tache tache1){
     return debut;
 }
 
-llist supprimerElement(llist liste, tache tache1){
+llistbnb supprimerElement(llistbnb liste, tachebnb tache1){
     elementbnb* previous = malloc(sizeof(elementbnb));
     elementbnb* tmp = malloc(sizeof(elementbnb));
 
@@ -160,7 +160,7 @@ llist supprimerElement(llist liste, tache tache1){
         return liste;
     }
 }
-int sommeCiFamilles(tache tab[], int size){
+int sommeCiFamillesbnb(tachebnb tab[], int size){
 	int i=0;
 	int tM1 = 0;
 	int tM2 = 0;
@@ -267,19 +267,19 @@ int sommeCiFamilles(tache tab[], int size){
 }
 
 
-int max2(int a, int b){
+/*int max2(int a, int b){
     if(a <= b){
         return b;
     }
     else{
         return a;
     }
-}
+}*/
 
-int max3(int a, int b, int c){
+/*int max3(int a, int b, int c){
     return max2(max2(a,b),c);
-}
-llist soustractionListes(llist taches, llist chemin){
+}*/
+llistbnb soustractionListes(llistbnb taches, llistbnb chemin){
     elementbnb* res = copie(taches);
 
 
@@ -303,14 +303,14 @@ llist soustractionListes(llist taches, llist chemin){
 }
 
 
-void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
+void branchAndBound(int BI, int BS, llistbnb listeTaches, int nbtaches){
 
     listenoeud ListArbre;
 
     listenoeud Resultat = NULL;
-    llist tachesRestantes = NULL;
-    noeud* n0 = malloc(sizeof(noeud));
-    tache t0 = { .id = -1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
+    llistbnb tachesRestantes = NULL;
+    noeudbnb* n0 = malloc(sizeof(noeudbnb));
+    tachebnb t0 = { .id = -1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
     n0->id = t0;
     n0->BI = BI;
     elementbnb* ntmp = malloc(sizeof(elementbnb));
@@ -330,7 +330,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
     elementbnb *tmp = listeTaches;
     while(tmp != NULL){
         //printf("yo");
-        tachesRestantes2 = ajouterEnTete(tachesRestantes2, tmp->t);
+        tachesRestantes2 = ajouterEnTetebnb(tachesRestantes2, tmp->t);
         tmp = tmp->next;
       //  printf("yo");
     }
@@ -338,13 +338,13 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
     elementbnb *tmp2 = tachesRestantes2;
      while(tmp2 != NULL){
         //printf("yo");
-        tachesRestantes = ajouterEnTete(tachesRestantes, tmp2->t);
+        tachesRestantes = ajouterEnTetebnb(tachesRestantes, tmp2->t);
         tmp2 = tmp2->next;
       //  printf("yo");
     }
 
    // printf("\nTaches Restantes \n");
-    afficherListeTaches(tachesRestantes);
+    afficherListeTachesbnb(tachesRestantes);
 
     //int cmpt = 0;
     while (ListArbre != NULL){
@@ -363,7 +363,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
         printf("\nJe test si %d est different de %d \n",ListArbre->chemin->taille,(listeTaches->taille)+1);
         if(ListArbre->chemin->taille != (listeTaches->taille)+1){
             printf("Oui c'est different\n");
-            noeud* tmp = ListArbre;
+            noeudbnb* tmp = ListArbre;
             printf("je definis un pointeur sur ma Listarbre tmp\n");
             printf("Contenu de tmp : \n");
             afficherListeNoeud(ListArbre);
@@ -371,22 +371,22 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
             if(tachesRestantes == NULL){
                 printf("Ma liste taches restantes est nul\n");
                 printf("du coup je soustrais la liste des taches avec le chemin\n");
-                afficherListeTaches(listeTaches);
+                afficherListeTachesbnb(listeTaches);
                 printf(" Avec ce chemin : \n");
-                afficherListeTaches(tmp->chemin);
+                afficherListeTachesbnb(tmp->chemin);
               //  elementbnb* listetachetmp = listeTaches;
                tachesRestantes = soustractionListes(listeTaches, tmp->chemin);
               // listeTaches = listetachetmp;
                printf("J'obtiens : \n");
-               afficherListeTaches(tachesRestantes);
-               afficherListeTaches(listeTaches);
+               afficherListeTachesbnb(tachesRestantes);
+               afficherListeTachesbnb(listeTaches);
              //  break;
                //break;
             }
             printf("\n je definis un pointeur sur mes tachesRestantes :\n");
 
             elementbnb *temp = tachesRestantes;
-            afficherListeTaches(temp);
+            afficherListeTachesbnb(temp);
 
             printf("Je dis a ListAbre d'avance\n");
             ListArbre = ListArbre->next;
@@ -401,14 +401,14 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
 
 
 
-                noeud* nt = malloc(sizeof(noeud));
+                noeudbnb* nt = malloc(sizeof(noeudbnb));
              //   printf("\n%d tache du noeud : ",temp->t.id);
                 nt->id = temp->t;
                 nt->BI = BI;
                // elementbnb* tmp2 = malloc(sizeof(elementbnb));
                // printf(" Adresse de tmp2 %a\n",&tmp2);
                 printf("J'affiche le chemin contenu dans tmp : tmp->chemin \n");
-                afficherListeTaches(tmp->chemin);
+                afficherListeTachesbnb(tmp->chemin);
                // tmp2 = copie(&(tmp->chemin));
 
 
@@ -418,7 +418,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
                 elementbnb* tmp2 = NULL;
                 while(copietmp22 != NULL){
 
-                tmp2 = ajouterEnTete(tmp2, copietmp22->t);
+                tmp2 = ajouterEnTetebnb(tmp2, copietmp22->t);
                 copietmp22 = copietmp22->next;
 
                 }
@@ -430,9 +430,9 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
 
 
                 printf("J'affiche donc mes taches dans mon tp2 par copie : \n");
-                afficherListeTaches(tmp2);
+                afficherListeTachesbnb(tmp2);
                 printf("J'affiche donc mes taches dans mon tmp->chemin pour voir si j'ai pas vidé : \n");
-                afficherListeTaches(tmp->chemin);
+                afficherListeTachesbnb(tmp->chemin);
              //   memmove(tmp2,tmp->chemin,(tmp->chemin->taille)*sizeof(elementbnb));
                // tmp->chemin = NULL;
              //   printf(" Adresse de tmp2 %a\n",&tmp2);
@@ -440,7 +440,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
                 nt->chemin = ajouterQueue(tmp2,nt->id);
 
                 printf("Voici donc le chemin dans le noeud\n : ");
-                afficherListeTaches(nt->chemin);
+                afficherListeTachesbnb(nt->chemin);
 
                 printf("J'ajoute ce noeud dans ListeArbretmp\n");
                 ListeArbretmp = ajouterTeteNoeud(ListeArbretmp, nt);
@@ -452,7 +452,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
            // break;
 
             printf("\n-------Fin du parcours des taches---------\n");
-            noeud* tmpn = malloc(sizeof(noeud));
+            noeudbnb* tmpn = malloc(sizeof(noeudbnb));
             tmpn = ListeArbretmp;
             printf("Je remplit maintenant ListArbre avec les noeuds de ListeArbretmp\n");
             printf("Le contenu actuel de ma ListArbre est : \n");
@@ -466,6 +466,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
                 //printf("%i\n",tmp3->id.id);
                // printf("\nJe remplit ListArbre\n");
               //  afficherListeTaches(tmpn->chemin);
+             //   if(sommeCiFamillesbnb())
                 ListArbre = ajouterTeteNoeud(ListArbre, tmpn);
                 printf("Contenu de ma ListArbre après ajout \n");
                 afficherListeNoeud(ListArbre);
@@ -487,7 +488,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
             printf("Je retire le premier element de Taches restantes\n");
 
             tachesRestantes = supprimerElement(tachesRestantes, ListArbre->id);
-            afficherListeTaches(tachesRestantes);
+            afficherListeTachesbnb(tachesRestantes);
 
         }else{
            //  printf("je suis laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -506,7 +507,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
 
         //    printf(" Mon j : %d",j);
             j--;
-            tache tableau[j];
+            tachebnb tableau[j];
              printf("Je creer un tab de taille %d\n",j);
             int i = 0;
             elementbnb *tachetmp2 = ListArbre->chemin;
@@ -519,11 +520,11 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
             }
 
             printf("Tableau fini de %d taches \n",i);
-            afficherTabTache(tableau,j);
+         //   afficherTabTache(tableau,j);
           //  break;
 
             printf("Je calcul la somme ci du tab \n");
-            int res = sommeCiFamilles(tableau, j);
+            int res = sommeCiFamillesbnb(tableau, j);
           //  afficherTabTache(tableau,j);
             printf(" j'ai %i en somme ci \n",res);
             //break;
@@ -541,7 +542,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
                 printf("Je vide Resultat si c'est pas déja fait\n");
                 while(tmpel != NULL){
                     printf("tache du chemin à add\n");
-                    noeud *ntmp = malloc(sizeof(noeud));
+                    noeudbnb *ntmp = malloc(sizeof(noeudbnb));
                     ntmp->id = tmpel->t;
                     ntmp->BI = BI;
                     ntmp->chemin = NULL;
@@ -576,7 +577,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
 
 }
 
-int sommeCi(tache tab[], int size){
+int sommeCibnb(tachebnb tab[], int size){
 	int i=0;
 	tab[0].ti = tab[0].ri;
 	for(i=1; i<size; i++){
@@ -610,19 +611,19 @@ struct listnoeud
     noeud *node;
     listnoeud *next;
 };*/
-void afficherTabTache(tache tableau[], int nombretache){
+/*void afficherTabTache(tachebnb tableau[], int nombretache){
     int i;
     printf("\n");
     for(i = 0; i < nombretache; i++){
-        tache t = tableau[i];
+        tachebnb t = tableau[i];
         printf("id : %i",t.id);
         printf("| pi : %i",t.pi);
         printf("| ri : %i",t.ri);
         printf("| ti : %i",t.ti);
         printf("| famille : %i\n",t.famille);
     }
-}
-void afficherListeTaches(llist taches){
+}*/
+void afficherListeTachesbnb(llistbnb taches){
   elementbnb *tmp = taches;
   printf("Liste des taches :\n");
   while(tmp != NULL){
@@ -640,7 +641,7 @@ void afficherListeTaches(llist taches){
 void afficherListeTachesNoeud(listenoeud nodes){
   //element *tmp2 = malloc(sizeof(element));
   printf("Liste des taches :\n");
-  noeud *tmp = nodes;
+  noeudbnb *tmp = nodes;
   while(tmp != NULL){
     printf("id : %i",tmp->id.id);
     printf("| pi : %i",tmp->id.pi);
@@ -653,7 +654,7 @@ void afficherListeTachesNoeud(listenoeud nodes){
 void afficherListeNoeud(listenoeud nodes){
   //element *tmp2 = malloc(sizeof(element));
   printf("Liste des taches :\n");
-  noeud *tmp = nodes;
+  noeudbnb *tmp = nodes;
   while(tmp != NULL){
     printf("id tache : %i",tmp->id.id);
     printf("| BI : %i\n",tmp->BI);
@@ -663,37 +664,42 @@ void afficherListeNoeud(listenoeud nodes){
     tmp = tmp->next;
   }
 }
-int main(int argc, char **argv){
+void algobnb(){
     printf("****** Projet d'ordonnancement ******\n\n");
 /* POUR TEST */
-    tache t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
-    tache t2 = { .id = 2, .pi = 3, .ri = 2, .ti = 0, .famille = 1 };
-    tache t3 = { .id = 3, .pi = 2, .ri = 5, .ti = 0, .famille = 5 };
-    tache t4 = { .id = 4, .pi = 5, .ri = 6, .ti = 0, .famille = 2 };
-    tache t5 = { .id = 5, .pi = 8, .ri = 3, .ti = 0, .famille = 3 };
-    tache t6 = { .id = 6, .pi = 1, .ri = 1, .ti = 0, .famille = 6 };
-    tache tableau[6] = {t1,t2,t3,t4,t5,t6};
+    tachebnb t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
+    tachebnb t2 = { .id = 2, .pi = 3, .ri = 2, .ti = 0, .famille = 1 };
+    tachebnb t3 = { .id = 3, .pi = 2, .ri = 5, .ti = 0, .famille = 5 };
+    tachebnb t4 = { .id = 4, .pi = 5, .ri = 6, .ti = 0, .famille = 2 };
+    tachebnb t5 = { .id = 5, .pi = 8, .ri = 3, .ti = 0, .famille = 3 };
+    tachebnb t6 = { .id = 6, .pi = 1, .ri = 1, .ti = 0, .famille = 6 };
+
+
+    tachebnb test1 = { .id = 7, .pi = 10, .ri = 0, .ti = 0, .famille = 7 };
+    tachebnb test2 = { .id = 6, .pi = 10, .ri = 0, .ti = 0, .famille = 7 };
+    tachebnb test = { .id = 8, .pi = 1, .ri = 50, .ti=0, .famille = 7};
+    tachebnb tableau[3] = {test1,test2,test};
     /* FIN TEST */
     int BI = 0;
-    int BS = sommeCi(tableau,6);
-    llist listesol = NULL;
+    int BS = sommeCibnb(tableau,3);
+    llistbnb listesol = NULL;
     int i;
 
-        listesol = ajouterEnTete(listesol, tableau[5]);
-        listesol = ajouterEnTete(listesol, tableau[4]);
-        listesol = ajouterEnTete(listesol, tableau[3]);
-        listesol = ajouterEnTete(listesol, tableau[2]);
-        listesol = ajouterEnTete(listesol, tableau[1]);
-        listesol = ajouterEnTete(listesol, tableau[0]);
+    //    listesol = ajouterEnTetebnb(listesol, tableau[5]);
+   //     listesol = ajouterEnTetebnb(listesol, tableau[4]);
+   //     listesol = ajouterEnTetebnb(listesol, tableau[3]);
+        listesol = ajouterEnTetebnb(listesol, tableau[2]);
+        listesol = ajouterEnTetebnb(listesol, tableau[1]);
+        listesol = ajouterEnTetebnb(listesol, tableau[0]);
 
      printf("Tab1 \n");
-    afficherListeTaches(listesol);
+    afficherListeTachesbnb(listesol);
 
 
 
 
 
 
-   branchAndBound(BI, BS, listesol, 6);
-    return 0;
+ //  branchAndBound(BI, BS, listesol, 6);
+  //  return 0;
 }
