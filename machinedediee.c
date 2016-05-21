@@ -559,18 +559,54 @@ int main(int argc, char **argv){
 
     histo listeSol = NULL;
     listeSol = ajouterTete(listeSol, tab1);
+
     listeSol = ajouterTete(listeSol, tab2);
+    elementbnb* l = NULL;
+    int cpt;
+    for(cpt = 0; cpt <nombreDeTache; cpt++){
+        tachebnb elt;
+        elt.id = tab2[cpt].id;
+        elt.pi = tab2[cpt].pi;
+        elt.ri = tab2[cpt].ri;
+        elt.ti = tab2[cpt].ti;
+        elt.famille = tab2[cpt].famille;
+        l = ajouterEnTetebnb(l, elt);
+
+    }
+
+ /* Copier le contenu de tab1
+    dans la nouvelle liste l
+ */
+
+
   //  char *arguments[] = {NULL, NULL };
  // int a;
+ /*struct tachebnb {
+  int id;
+  int pi;
+  int ri;
+  int ti;
+  int famille;
+};
+typedef struct tachebnb tachebnb;
+typedef struct elementbnb elementbnb;
+struct elementbnb
+{
+  tachebnb t;
+  int taille;
+  struct elementbnb *next;
+};
+*/
+//typedef elementbnb* llistbnb;
     switch(algo){
     case 1:
         algoGenetique(heuristique, listeSol, nbIterations);
         break;
     case 2:
-        algobnb();
+        sommeFinTache = algorbnb(&l, nombreDeTache);
         break;
     default:
-        printf("l'algo n'exsite pas\n");
+        printf("l'algo n'existe pas\n");
 
         break;
     }
