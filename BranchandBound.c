@@ -370,7 +370,7 @@ void afficherListeTaches(llist taches){
 
 void afficherListeTachesNoeud(listenoeud nodes){
   //element *tmp2 = malloc(sizeof(element));
-  printf("Liste des taches :\n");
+  printf("Liste des taches (A lire de bas en haut pour l'ordre):\n");
   noeud *tmp = nodes;
   while(tmp != NULL){
     printf("id : %i",tmp->id.id);
@@ -602,7 +602,7 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
             int i = 0;
             elementbnb *tachetmp2 = ListArbre->chemin;
             tachetmp2 = tachetmp2->next;
-       //     printf("je remplis mon tab avec le chemin en enlevant bien sur la tache t0 qui nous pete les burnes \n");
+
             while(tachetmp2 != NULL){
                 tableau[i] = tachetmp2->t;
                 tachetmp2 = tachetmp2->next;
@@ -662,7 +662,8 @@ void branchAndBound(int BI, int BS, llist listeTaches, int nbtaches){
 
     //ListArbre = ListArbre->next;
     }
-    printf(" Ma BS : %d",BS);
+    printf(" Resultat de l'algorithme  : %d\n",BS);
+
     afficherListeTachesNoeud(Resultat);
 
 }
@@ -712,7 +713,7 @@ int main(int argc, char **argv){
         listesol = ajouterEnTete(listesol, tableau[1]);
         listesol = ajouterEnTete(listesol, tableau[0]);*/
 
-     printf("Tab1 \n");
+     printf(" \n");
     afficherListeTaches(listesol);
 
 
