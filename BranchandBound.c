@@ -665,7 +665,7 @@ void afficherListeNoeud(listenoeud nodes){
     tmp = tmp->next;
   }
 }
-int algobnb(){
+int algobnb(int nbTaches){
     printf("****** Projet d'ordonnancement ******\n\n");
 /* POUR TEST */
     tachebnb t1 = { .id = 1, .pi = 5, .ri = 0, .ti = 0, .famille = 7 };
@@ -682,7 +682,7 @@ int algobnb(){
     tachebnb tableau[6] = {t1,t2,t3,t4,t5,t6};
     /* FIN TEST */
     int BI = 0;
-    int BS = sommeCibnb(tableau,6);
+    int BS = sommeCibnb(tableau,nbTaches);
     llistbnb listesol = NULL;
     int i;
 
@@ -701,6 +701,6 @@ int algobnb(){
 
 
 
-  return branchAndBound(BI, BS, listesol, 6);
+  return branchAndBound(BI, BS, listesol, nbTaches);
   //  return 0;
 }

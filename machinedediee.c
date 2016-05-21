@@ -567,7 +567,7 @@ int main(int argc, char **argv){
         algoGenetique(heuristique, listeSol, nbIterations);
         break;
     case 2:
-        sommeFinTache = algobnb();
+        sommeFinTache = algobnb(nombreDeTache);
         break;
     default:
         printf("l'algo n'exsite pas\n");
