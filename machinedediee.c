@@ -8,7 +8,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "Branchandbound.c"
 /* Definition structure de tache */
 
 
@@ -502,9 +501,7 @@ void algoGenetique(int heuristique, histo histo, int nbIterations){
     afficherTabTache(tabFinal,nombreDeTache);
 }
 
-int algoBranchAndBound(int heuristique, llist taches){
-    return 10;
-}
+
 
 int main(int argc, char **argv){
     printf("****** Projet d'ordonnancement ******\n\n");
@@ -526,15 +523,14 @@ int main(int argc, char **argv){
         tableau[i] = tmp;
     }
 
-    printf("\nChoisissez l'algorithme :\n1. Genetique\n2. Branch and bound\n>> ");
-    scanf("%i",&algo);
 
-    if(algo == 1){
+
+
         printf("\nChoisissez une heuristique\n1. Que des croisements\n2. Que des mutations\n3. Aleatoire\n>> ");
         scanf("%i",&heuristique);
         printf("\nSaisissez un nombre d'iteration : >> ");
         scanf("%i",&nbIterations);
-    }
+
 
 
     /* POUR TEST */
@@ -560,20 +556,11 @@ int main(int argc, char **argv){
     histo listeSol = NULL;
     listeSol = ajouterTete(listeSol, tab1);
     listeSol = ajouterTete(listeSol, tab2);
-  //  char *arguments[] = {NULL, NULL };
-  //  int a;
-    switch(algo){
-    case 1:
-        algoGenetique(heuristique, listeSol, nbIterations);
-        break;
-    case 2:
-        sommeFinTache = algobnb(nombreDeTache);
-        break;
-    default:
-        printf("l'algo n'exsite pas\n");
 
-        break;
-    }
+    algoGenetique(heuristique, listeSol, nbIterations);
+
+
+
     printf("RESULTAT de l'algorithme : %i\n",sommeFinTache);
     return 0;
 }
