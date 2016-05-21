@@ -573,8 +573,21 @@ int branchAndBound(int BI, int BS, llistbnb listeTaches, int nbtaches){
     //ListArbre = ListArbre->next;
     }
     //printf(" Ma BS : %d",BS);
-    afficherListeTachesNoeud(Resultat);
+    noeudbnb *copieres = Resultat;
+    noeudbnb *Resultat2 = NULL;
+    noeudbnb *tmp3 = malloc(sizeof(noeudbnb));
+    while(copieres != NULL){
+        tmp3->id = copieres->id;
+        tmp3->BI = 0;
+        Resultat2 = ajouterTeteNoeud(Resultat2,tmp3);
+        copieres = copieres->next;
+
+    }
+    printf("Ma liste de tache dans l'ordre\n");
+    afficherListeTachesNoeud(Resultat2);
     return BS;
+   // afficherListeTachesNoeud(Resultat);
+  //  return BS;
 
 }
 
@@ -674,24 +687,43 @@ int algobnb(int nbTaches){
     tachebnb t4 = { .id = 4, .pi = 5, .ri = 6, .ti = 0, .famille = 2 };
     tachebnb t5 = { .id = 5, .pi = 8, .ri = 3, .ti = 0, .famille = 3 };
     tachebnb t6 = { .id = 6, .pi = 1, .ri = 1, .ti = 0, .famille = 6 };
+    llistbnb listesol = NULL;
+    listesol = ajouterEnTetebnb(listesol, t6);
+    listesol = ajouterEnTetebnb(listesol, t5);
+    listesol = ajouterEnTetebnb(listesol, t4);
+    listesol = ajouterEnTetebnb(listesol, t3);
+    listesol = ajouterEnTetebnb(listesol, t2);
+    listesol = ajouterEnTetebnb(listesol, t1);
+
+
 
 
  //   tachebnb test1 = { .id = 7, .pi = 10, .ri = 0, .ti = 0, .famille = 7 };
   //  tachebnb test2 = { .id = 6, .pi = 10, .ri = 0, .ti = 0, .famille = 7 };
  //   tachebnb test = { .id = 8, .pi = 1, .ri = 50, .ti=0, .famille = 7};
+
     tachebnb tableau[6] = {t1,t2,t3,t4,t5,t6};
+
+ /*    tachebnb tableau[nbTaches];
+    int i = 0;
+    elementbnb *tachetmp2 = listesol;
+
+    while(tachetmp2 != NULL){
+        tableau[i] = tachetmp2->t;
+        tachetmp2 = tachetmp2->next;
+        i++;
+    }
+*/
+
+
+
     /* FIN TEST */
     int BI = 0;
     int BS = sommeCibnb(tableau,nbTaches);
-    llistbnb listesol = NULL;
-    int i;
 
-        listesol = ajouterEnTetebnb(listesol, tableau[5]);
-        listesol = ajouterEnTetebnb(listesol, tableau[4]);
-        listesol = ajouterEnTetebnb(listesol, tableau[3]);
-        listesol = ajouterEnTetebnb(listesol, tableau[2]);
-        listesol = ajouterEnTetebnb(listesol, tableau[1]);
-        listesol = ajouterEnTetebnb(listesol, tableau[0]);
+
+
+
 
    //  printf("Tab1 \n");
   //  afficherListeTachesbnb(listesol);
