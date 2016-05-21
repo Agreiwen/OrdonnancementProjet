@@ -561,13 +561,13 @@ int main(int argc, char **argv){
     listeSol = ajouterTete(listeSol, tab1);
     listeSol = ajouterTete(listeSol, tab2);
   //  char *arguments[] = {NULL, NULL };
- // int a;
+  //  int a;
     switch(algo){
     case 1:
         algoGenetique(heuristique, listeSol, nbIterations);
         break;
     case 2:
-        algobnb();
+        sommeFinTache = algobnb();
         break;
     default:
         printf("l'algo n'exsite pas\n");
