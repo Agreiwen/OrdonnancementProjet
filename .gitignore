@@ -1,0 +1,12 @@
+# Gitignore #
+############
+obj/
+doxygen/
+*.vs
+bin/
+*.o
+*.exe
+*.cbp
+*.depend
+*.layout
+*.h
